@@ -1,0 +1,183 @@
+body{
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    
+    font-family: "Roboto Light", Roboto, sans-serif;
+}
+
+.inner {
+    justify-content: space-between;
+    width: 1025px;
+}
+
+.header{
+    box-sizing: border-box;
+    height: 65px;
+}
+
+.hero{
+    padding-top: 100px;
+    padding-bottom: 132px;
+    box-sizing: border-box;
+    height: 470px;
+}
+
+.description{
+    width: 450px;
+    align-items: flex-start;
+    padding: 5px 0;
+    justify-self: center;
+    row-gap: 10px;
+}
+
+.img{
+    min-height: 235px;
+    min-width: 520px;
+    background-color: #6D747D;
+}
+
+.gallery{
+    height: 500px;
+    gap: 50px;
+    padding-top: 50px;
+    padding-bottom: 120px;
+    box-sizing: border-box;
+}
+
+.boxes{
+    gap: 58px;
+}
+.box{    
+    text-align: center;
+    width: 168px;
+}
+
+.square{
+    height: 160px;
+    width: 160px;
+    border-color: #3882f6;
+    border-radius: 16px;
+    border-style: solid;
+    border-width: 4px;
+    margin: 8px;
+}
+
+.quote{
+    height: 430px;
+}
+
+.quote .inner {
+    width: 850px;
+}
+
+.author {
+    text-align: end;
+    padding-right: 40px;
+}
+
+.bubble{
+    width: 800px;
+    padding: 50px;
+    margin: 100px;
+    border-radius: 16px;
+    align-self: center;
+}
+
+.bubble .button{
+    border-style: solid;
+}
+
+.footer{
+    padding: 40px;
+}
+
+/*FLEX PARAMETERS*/
+
+.flex{
+    display: flex;
+}
+
+.flex.column{
+    flex-direction: column;
+}
+
+.flex.space-between{
+    justify-content: space-between;
+}
+
+.flex.evenly{
+    justify-content: space-evenly;
+}
+
+.flex.center{
+    justify-content: center;
+}
+
+.flex.align{
+    align-items: center;
+}
+
+.flex.baseline{
+    align-items: baseline;
+}
+
+.flex.fixed{
+    flex: 0 0 auto;
+}
+
+/*TYPE MODIFIERS*/
+
+a{
+    text-decoration: none;
+}
+
+ul{
+    list-style-type: none;
+    margin: 0px;
+    gap: 24px;
+}
+
+.button {
+    border: none;
+    border-radius: 8px;
+    border-width: 2px;
+    background-color: #3882f6;
+    border-color: white;
+    padding: 8px 32px;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+}
+/*COLOURATION AND TEXT SIZING*/
+
+.dark.flex{ background-color: #1f2937;}
+.dark.text{ color: #1f2937;}
+
+.light.flex{ background-color: #ffffff;}
+.light.text{color: #f9faf8;}
+
+.pale.flex{ background-color: #e5e7eb;}
+.pale.text{ color: #e5e7eb;}
+
+.accent.flex{ background-color: #3882f6;}
+.accent.text{ color: #3882f6;}
+
+.xl{
+    font-size: 48px;
+}
+
+.l{
+    font-size: 36px;
+}
+
+.m{
+    font-size: 24px;
+}
+
+.s{
+    font-size: 18px;
+}
+
+.bold{
+    font-weight: 700;
+}
