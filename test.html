@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang= "en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testing Sandbox</title>
+</head>
+
+<!-- The DOM -->
+<body>
+    <h1>
+      THE TITLE OF YOUR WEBPAGE
+    </h1>
+    <div id="container"></div>
+  </body>
+
+<script>
+
+const firstP = document.createElement('dp');
+const h3 = document.createElement('h3');
+const div = document.createElement('div');
+const h1 = document.createElement('h1');
+const meToo = document.createElement('p');
+const body = document.querySelector('body');
+
+firstP.style.color = "red";
+firstP.textContent = "Hey I'm red!";
+
+h3.style.color = "blue";
+h3.textContent = "I'm a blue h3!";
+
+div.setAttribute("style", "border-color: black; background: pink")
+
+h1.textContent = "I'm in a div";
+meToo.textContent = "ME TOO!";
+
+body.appendChild(firstP);
+body.appendChild(h3);
+body.appendChild(div);
+
+div.appendChild(h1);
+div.appendChild(meToo);
+
+
+</script>
+
+</html>
+  
