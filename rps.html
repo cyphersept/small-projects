@@ -8,7 +8,31 @@
     <script src = "rps-script.js"></script>
 </head>
 
-<body>
-    
+<body class="rps">
+    <h1 class="title">Let's Play Rock, Paper, Scissors!</h1>    
+    <div class="icons">
+        <div class="player">
+            <h2 class="name"></h2>
+            <div class="score">Score:<span class="points"></span></div>
+            <div class="icon"></div>
+            <div class="text"></div>
+        </div>
+        <div class="vs"></div>
+        <div class="cpu">
+            <h2 class="name"></h2>
+            <div class="score">Score:<span class="points"></span></div>
+            <div class="icon"></div>
+            <div class="text"></div>
+        </div>
+    </div>
+
+    <div class="msg"></div>   
+
+    <div class="options">
+        <button class="left" data-index="0"></button>
+        <button class="mid" data-index="1"></button>
+        <button class="right" data-index="2"></button>
+    </div>
 </body>
+
 </html>
