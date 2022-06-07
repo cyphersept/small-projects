@@ -5,34 +5,42 @@
     <meta charset="UTF-8"
     <title>Rock Paper Scissors</title>
     <link rel="stylesheet" href="rps-style.css">
-    <script src = "rps-script.js"></script>
 </head>
 
 <body class="rps">
     <h1 class="title">Let's Play Rock, Paper, Scissors!</h1>    
-    <div class="icons">
-        <div class="player">
-            <h2 class="name"></h2>
-            <div class="score">Score:<span class="points"></span></div>
-            <div class="icon"></div>
-            <div class="text"></div>
+    <div class="main">
+        <div class="arena">
+            <div class="player">
+                <div class="big name">😃You😃</div>
+                <div class="points">"Let's go!"</div>
+                <div class="played">
+                    <div class="xl icon">🎲</div>
+                    <div class="text">Pick a hand and play!</div>
+                </div>
+            </div>
+            <div class="big vs">
+                <div class="name"></div>
+                <div class="xl clash">💥</div>
+            </div>
+            <div class="cpu">
+                <div class="big name">🤖CPU🤖</div>
+                <div class="points">"Robots rule!"</div>
+                <div class="played">
+                    <div class="xl icon">🎲</div>
+                    <div class="text">Pick a hand and play!</div>
+                </div>
+            </div>
         </div>
-        <div class="vs"></div>
-        <div class="cpu">
-            <h2 class="name"></h2>
-            <div class="score">Score:<span class="points"></span></div>
-            <div class="icon"></div>
-            <div class="text"></div>
-        </div>
-    </div>
-
-    <div class="msg"></div>   
+        <div class="msg">Click any button to start a new game!</div>
+    </div>   
 
     <div class="options">
-        <button class="left" data-index="0"></button>
-        <button class="mid" data-index="1"></button>
-        <button class="right" data-index="2"></button>
+        <button class="left" data-index="0">✊</button>
+        <button class="mid" data-index="1">🖐&#65039;</button>
+        <button class="right" data-index="2">✌&#65039;</button>
     </div>
 </body>
 
+<script src = "rps-script.js"></script>
 </html>

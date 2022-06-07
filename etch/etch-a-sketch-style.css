@@ -7,7 +7,6 @@
     color: white;
     padding: 40px;
     background-color: rgb(0, 183, 196);
-    border-radius: 24px;
     align-items: center;
 }
 
@@ -63,5 +62,5 @@ button:hover, input:hover, .toggled {
 }
 
 button:active {
-    background-color: rgb(208, 255, 121)
+    background-color: rgb(238, 252, 87)
 }

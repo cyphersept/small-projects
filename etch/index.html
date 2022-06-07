@@ -12,7 +12,7 @@
 <body class="sketch" onload="clearPad();">
     <div class="buttons">
         <div class="left">
-            <button class="clear">❌Clear</button>
+            <button class="clear">❌New</button>
             <label for="size">Size:</label>
             <input type="number" id="size" value="16" min="1" max="100" required="true">
         </div>
@@ -65,10 +65,12 @@
     }
     
     function updateSize() {     //Changes targetSize according to input
-        let newSize = document.querySelector("#size").value;
+        const src = document.querySelector("#size");
+        let newSize = src.value;
         newSize = (newSize > 100) ? 100
             : (newSize < 1) ? 1 
-                : newSize
+                : newSize;
+        src.value = newSize;
         dimension = parseInt(newSize);
         const newWidth = dimension*10;
         root.style.width = `${newWidth}px`;

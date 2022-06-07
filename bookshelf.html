@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bookshelf-style.css">
+    <title>Bookshelf</title>
+</head>
+
+<body>
+<div class="header">My Library</div>
+
+<div class="shelf">
+     <div class="book">
+         <div class="binding"></div>
+         <div class="newBook inner">
+            <div class="title">New Book</div>
+            <img src="https://img.icons8.com/nolan/64/add.png" alt="Add new book">
+        </div>
+     </div> 
+
+
+    <div class="template">        
+        <div class="top">
+            <!-- clickable bookmarklet to show/hide  -->
+            <div class="ribbon"></div> 
+
+            <div class="bookBtns">
+                <div class="edit">
+                    <img src="https://img.icons8.com/pastel-glyph/32/000000/edit--v1.png" alt="Edit">
+                </div>
+                <div class="delete">
+                    <img src="https://img.icons8.com/pastel-glyph/32/000000/trash.png" alt="Delete">
+                </div>
+            </div>
+        </div>
+
+        <div class="book">
+            <div class="upper">
+                <div class="binding"></div>
+                <form action="" method="post" class="bookForm inner">
+                    <input type="text" class="titleIn" name="myTitle" placeholder="Title" maxlength="100">
+                    <input type="text" class="authorIn" name="myAuthor" placeholder="Author" maxlength="100">
+                    <input type="text" class="pagesIn" name="myPages" placeholder="Page count" maxlength="25">
+                </form>
+            </div>
+            <div class="lower"></div>
+        </div>
+
+    </div>
+</div>
+
+<a href="https://icons8.com/icons/nolan">Icons by Icons8</a>
+<script>
+const shelf = document.querySelector(".shelf");
+const template = document.querySelector(".template");
+let myLibrary = [];
+
+
+
+function Book(title, author, pages) {
+    this.title = title, 
+    this.author = author, 
+    this.pages = pages, 
+    this.read = false;
+}
+
+Book.prototype.info = function() {
+    let status = this.read ? "read" : "not yet read";
+    return `${this.title} by ${this.author}, ${this.pages} pages, ${status}`;
+}
+
+Book.prototype.toggleRead = function(){
+    this.read = !this.read;
+}
+
+Book.prototype.updateDisplay = function(){
+    let status = (this.read) ? "read" : "unread";
+    this.node.querySelector('.title').innerHTML = `${this.title}`;
+    this.node.querySelector('.author').innerHTML = `${this.author}`;
+    this.node.querySelector('.pagesAndRead').innerHTML = `${this.pages} pages, ${status}`;
+}
+
+//Adds new book to array and clones template on DOM 
+Book.prototype.addToLibrary = function() {
+    this.node = template.cloneNode(deep);
+    this.node.className = 'book';
+    this.node.setAttribute('data-index', `${myLibrary.length}`);
+    this.updateDisplay();
+    
+    shelf.appendChild(this.node)
+    myLibrary.push(this);
+}
+
+Book.prototype.removeFromLibrary = function() {
+    myLibrary.splice(this.node.getAttribute('data-index'), 1);
+    shelf.removeChild(this.node);
+}
+
+createNewBook = function(obj){
+    document.getElementById('bookForm').close();
+    
+}
+showForm = function(){
+    document.getElementById('bookForm').style.display = "fixed";
+}
+
+const newBtn = document.querySelector('.template .title').addEventListener(click, createNewBook);
+
+close = function(){
+    this.style.display.none;
+}
+
+</script>
+
+
+
+</body>
+
+<!-- //From: https://javascript.plainenglish.io/how-to-build-complex-dom-elements-quickly-b3ead8e09647
+const utils = (function() {   
+    const template = function(obj) {
+        return {
+        className:'book',
+        innerHTML: `<h2>${obj.title}</h2><h2>${obj.title}</h2><h2>${obj.title}</h2>`,
+        attrs: {
+            dataIndex:'bar',
+            dataBaz:'garply',
+            onclick:'showModal()'      
+            }
+        }
+    }
+    const createEl = function(o) {      
+      // get the type and create an element with it
+      let type = o.type || 'div';
+      let el = document.createElement(type);
+      
+       // assign properties
+       for (const key of (Object.keys(o))) {
+          if (key != 'attrs' && key != 'type') {
+            el[key] = o[key];
+          }
+       }
+       if (o.attrs) {
+            // assign attributes
+             for (let key of (Object.keys(o.attrs))) {
+               
+                // grab the value of this attribute
+                let value = o.attrs[key];
+               
+                // convert attribute key from camel case to dash syntax
+                if (key != key.toLowerCase()) {
+                   key = key.replace(/[A-Z]/g, m => "-" + m.toLowerCase());
+                }
+                // set the attribute on the element
+                el.setAttribute(key, value);
+            }
+       }
+       return el;
+   };
+   return {createEl};
+}); -->
+</html>

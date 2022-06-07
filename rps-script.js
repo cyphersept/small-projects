@@ -1,61 +1,73 @@
-//TODO: REFACTOR WITH OBJECT LISTS!!
-
 const rock = {
     name:"Rock",
     upper:this.name.toUpperCase(),
-    button:document.querySelector('.left'),
-    emoji:"✊",
-    weakness:paper
+    button: document.querySelector(".left"),
+    emoji:"✊"
 }
 
 const paper = {
     name:"Paper",
     upper:this.name.toUpperCase(),
-    button:document.querySelector('.mid'),
-    emoji:"🖐",
-    weakness:scissors
+    button: document.querySelector('.mid'),
+    emoji:"🖐" + String.fromCodePoint("65039")
 }
 
 const scissors = {
     name:"Scissors",
     upper:this.name.toUpperCase(),
-    button:document.querySelector('.right'),
-    emoji:"✌",
-    weakness:rock
+    button: document.querySelector('.right'),
+    emoji:"✌" + String.fromCodePoint("65039")
 }
 
-const score = {
-    playerPts:0,
-    cpuPts:0,
+const player = {
+    score: 0,
+    points: document.querySelector('.rps .player .points'),
+    icon: document.querySelector('.rps .player .icon'),
+    text: document.querySelector('.rps .player .text'),
 }
 
-const display = {
-    play: document.querySelector('.rps .play'),
-    msg: document.querySelector('.rps .msg'),
-    player: document.querySelector('.rps .player'),
-    cpu: document.querySelector('.rps .cpu')
+const cpu = {
+    score: 0,
+    points: document.querySelector('.rps .cpu .points'),
+    icon: document.querySelector('.rps .cpu .icon'),
+    text: document.querySelector('.rps .cpu .text'),
 }
 
+const msg = document.querySelector('.rps .msg');
+rock.weakness = paper;
+paper.weakness = scissors;
+scissors.weakness = rock;
 const options = [rock, paper, scissors];
 let selection //selected button
 
 
-options.forEach(item => {
-    item.button.addEventListener('click', event => {
-      updateSelection(item);
+
+options.forEach((e) => {
+    e.button.addEventListener('click', event => {
+        selection = e;
+        playRound("UI");
     })
 })
 
-
-
 //https://www.delftstack.com/howto/javascript/javascript-toggle-button/
 
-//Refactor into literal "mini" games contained in boxes, several visible on screen at once to minimize clicking
+function playRound(mode) {
+    if (player.score == 5 || cpu.score == 5) return victory();
+    if (!player.score && !cpu.score) {
+        updateText("", player.points);
+        updateText("", cpu.points);
+    }
+    const playerPick = playerPlay(mode);
+    const cpuPick = computerPlay();
+    const winner = pickWinner(playerPick, cpuPick);
+    updateText(winner, msg);
+}
 
 function computerPlay() {    
     const num = Math.floor(Math.random() * 3); //Number from 0-2
     const result = options[num];
-    updateText(`CPU chose ${result.name}!`);
+    updateText(`CPU chose ${result.name}!`, cpu.text);
+    cpu.icon.textContent = result.emoji
     return result;
 }
 
@@ -63,10 +75,49 @@ function playerPlay(mode) {
     let result;
     if (mode == "UI") result = selection;
     else result = playerInput("Rock, paper, or scissors?"); //repeats until valid
-    updateText(`You chose ${result.name}!`);
+    updateText(`You chose ${result.name}!`, player.text);
+    player.icon.textContent = result.emoji;
     return result;
 }
 
+function pickWinner(playerPick, cpuPick) {
+    let text = "It's a tie!"
+    if (playerPick === cpuPick.weakness) {
+        text = "You win the round!"
+        updateScore(player)
+    } else if (cpuPick === playerPick.weakness) {
+        text = "CPU wins the round!"
+        updateScore(cpu)
+    }
+    return text;
+}
+
+function updateText(str, loc) {
+    console.log(str);
+    loc.textContent = str;
+}
+
+function updateScore(user) {
+    user.score++;
+    user.points.textContent += "⭐" + String.fromCodePoint("65039")
+}
+
+function victory() {
+    const winner = (player.score > cpu.score) ? player : cpu;
+    const loser = (player.score < cpu.score) ? player : cpu;
+    player.score = 0;
+    cpu.score = 0;
+
+    winner.icon.textContent = "🎉"
+    winner.text.textContent = "Hip hip hurray!"
+    loser.icon.textContent = "😭"
+    loser.text.textContent = "Better luck next time!"
+    msg.textContent = (winner == player)
+        ? "You won the game! Click to play again!"
+        : "CPU won the game! Click to play again!"
+}
+
+//FOR CONSOLE GAMEPLAY MODE: 
 function playerInput(msg) { //Recursively loops until player gives valid input
     const input = prompt(msg);
     const result = validateInput(input);
@@ -81,62 +132,13 @@ function validateInput(input) { //Returns index of valid input OR undefined
     return result;
 }
 
-function playRound(mode) {
-    const player = playerPlay(mode);
-    const cpu = computerPlay();
-    const winner = pickWinner(player, cpu);
-    updateText(winner);
-    /*let winner = "";
-    if (player == cpu) winner = "Tie";
-        else if ((player == cpu + 1) || (player == 0) && (cpu == 2)) winner = "Player";
-        else winner = "CPU";
-    return winner;*/
-}
-
-function pickWinner(player, cpu) {
-    let text = "It's a tie!"
-    if (player === cpu.weakness) {
-        text = "You win the round!"
-        score.playerPts++;
-    } else if (cpu === player.weakness) {
-        text = "I win the round!"
-        score.cpuPts++;
-    }
-    return text;
-}
-
 function playGame(mode) {   
 
-    if (mode == "UI") while (player < 5 && cpu < 5) playRound(UI);
+    if (mode == "UI") while (player.score < 5 && cpu.score < 5) playRound(UI);
     else for (let i = 0; i < 5; i++) playRound();
     
     let text = "[It's a tie! Play again?]";
-    if (score.playerPts > score.cpuPts) text = ("[Congratulations! You're the winner!]");
+    if (player.score > cpu.score) text = ("[Congratulations! You're the winner!]");
     else text = ("[The CPU is the winner. Better luck next time!]");
-    updateText(text);   
+    updateText(text, msg);   
 }
-
-function updateText(str) {
-    console.log(str);
-    display.msg.textContent = str;
-}
-
-function reset(){
-    clearSelection();
-    score.playerPts = 0;
-    score.cpuPts = 0;
-}
-
-function clearSelection(){
-    rockBtn.classList.remove("selected");
-    paperBtn.classList.remove("selected");
-    scissorsBtn.classList.remove("selected");
-    selection = null;
-}
-
-function updateSelection(btn) {
-    clearSelection();
-    btn.classList.add("selected");
-    selection = options[parseInt(btn.getAttribute("data-index"))];
-}
-

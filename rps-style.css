@@ -1,18 +1,102 @@
-.body{
-    display: flex;
-    flex-direction: column;
-    align-content: center;
 
-    max-width: 500px;
-    max-height: 800px;
-
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif
+:root {
+    --my-teal: rgb(0, 183, 196);
+    --my-lime: rgb(238, 252,87);
+    --my-orange: rgb(255, 159, 95);
+    --my-fuschia: rgb(228, 62, 128);
+    --my-purple: rgb(154, 52, 142);
+    --my-yellow: rgb(255, 235, 121);
 }
 
-h1{
+.big, h1 {
     font-size: 32px;
 }
 
-h2{
+.xl {
+    font-size: 64px;
+}
+
+.rps{
+    display: flex;
+    flex-flow: column;
+
+    max-width: 500px;
+    max-height: 800px;
+    padding: 40px;
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    background-color: var(--my-orange);
+}
+
+.main {
+    padding: 24px;
+    background-color: white;
+    outline: var(--my-fuschia) solid 3px;
+    color: var(--my-fuschia);
+    border-radius: 8px;
+}
+
+.arena {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.points {
+    text-align: left;
+    height: 32px;
+    margin: 0 0 8px 0;   
+}
+
+.player, .cpu, .played, .vs {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+    width: 166px;
+}
+
+.played {
+    border: 3px solid var(--my-orange);
+    border-radius: 8px;
+    background-color: var(--my-yellow);
+    color: var(--my-orange);;
+    height: 166px;
+    gap: 0px;
+    margin-bottom: 16px;
+}
+
+.options {
+    display: flex;
+    flex: 1 0 auto;
+    gap: 20px;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+button{
+    display: flex;
+    justify-content: center;
+    flex: 1 1 100px;
+    
+    border: 3px solid var(--my-fuschia);
+    border-radius: 8px;
+    color: var(--my-orange);
+    background-color: var(--my-yellow);
+    font-size: 48px;     
+    padding-bottom: 16px;
+    box-shadow: inset -4px -4px 0px rgba(225, 82, 161, 0.6);
+}
+
+
+button:active {
+    background-color: var(--my-orange);
+    box-shadow: inset 4px 4px 0px rgba(225, 82, 161, 0.6);
 }

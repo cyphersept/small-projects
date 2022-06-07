@@ -1,0 +1,127 @@
+:root {
+    --my-teal: rgb(0, 183, 196);
+    --my-lime: rgb(238, 252,87);
+    --my-orange: rgb(255, 159, 95);
+    --my-fuschia: rgb(228, 62, 128);
+    --my-purple: rgb(154, 52, 142);
+    --my-yellow: rgb(255, 235, 121);
+    --my-pink: rgb(255, 182, 219);
+    --med-pink: rgb(255, 146, 201);
+    --dark: rgb(136, 4, 120);
+    --jade: rgb(157, 226, 200);
+    --ribbon-size: 5px;
+    --page-size: 2px;
+}
+
+* {
+    border: 2px solid black;
+}
+
+body, .shelf, .book .inner, .top, .bookBtns, .book {
+    display: flex;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 32px;
+    color: var(--my-fuschia);
+    background-color: var(--my-pink);    
+    flex-direction: column;
+    align-content: center;
+    padding: 2rem;
+}
+
+.header{
+    text-align: center;
+    font-size: clamp(1rem, 2vw, 3rem);
+    padding: 0.5rem;
+}
+
+.shelf{
+    /* display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); */
+    border: 3px solid var(--my-fuschia);
+    border-radius: 8px;
+    background-color: pink;
+}
+
+.book .inner{
+    background-color: var(--my-fuschia);
+    color: var(--dark);
+    font-size: 1rem;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-right: calc(5*var(--page-size) + 0.5rem);
+    padding-left: 0.5rem;
+}
+
+.template {
+    position: relative;
+    size: max(200px, 15vw);
+}
+
+.top{
+    position: absolute;
+    justify-content: space-between;
+    margin: 0 1rem;
+}
+
+.bookBtns {
+    justify-content: space-evenly;
+    padding: 1rem;
+}
+
+.ribbon{
+    width: 0; 
+    height: calc(16*var(--ribbon-size)); 
+    border-right: calc(5*var(--ribbon-size)) solid var(--my-yellow);
+    border-left: calc(5*var(--ribbon-size)) solid var(--my-yellow);
+    border-bottom: calc(4*var(--ribbon-size)) solid transparent;
+    border-radius: var(--ribbon-size) var(--ribbon-size) 0 0;
+}
+
+.book {
+    background-color: var(--my-fuschia);
+    width: 10rem;
+    height: 14rem;
+}
+
+.binding {
+    border: 4 px solid var(--my-fuschia);
+    border-radius: 4px;
+    width: 1rem;
+    box-shadow: inset -2px 0 0 0 var(--my-purple),
+    
+                inset 0px calc(-2*var(--page-size)) 0px 0px bisque,
+                inset 0px calc(-2*2*var(--page-size)) 0px 0px pink,
+                inset 0px calc(-3*2*var(--page-size)) 0px 0px bisque,
+                inset 0px calc(-4*2*var(--page-size)) 0px 0px pink,
+                inset 0px calc(-5*2*var(--page-size)) 0px 0px bisque;
+}
+
+.book .inner {
+    border: 4 px solid var(--my-fuschia);
+    border-radius: 4px;
+    box-shadow: inset calc(-1*var(--page-size)) calc(-2*var(--page-size)) 0px 0px bisque,
+                inset calc(-2*var(--page-size)) calc(-2*2*var(--page-size)) 0px 0px pink,
+                inset calc(-3*var(--page-size)) calc(-3*2*var(--page-size)) 0px 0px bisque,
+                inset calc(-4*var(--page-size)) calc(-4*2*var(--page-size)) 0px 0px pink,
+                inset calc(-5*var(--page-size)) calc(-5*2*var(--page-size)) 0px 0px bisque;
+}
+
+input[type="text"]{
+    background-color: bisque;
+    border: 2px dotted var(--my-purple);
+    border-radius: 4px;
+}
+
+input[type="text"]:disabled {
+    background-color: transparent;
+    color: var(--my-purple);
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: var(--med-pink);
+    opacity: 1; /* Firefox */
+  }

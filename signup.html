@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="signup-style.css">
+    <title>Document</title>
+</head>
+
+<body>
+<div class="splash">
+    <div class="title">
+        <div class="logo"><img src="icons8-leaf-100.png"/></div>
+        <div class="name">Matcha</div>
+    </div>
+    <div class="credit"><a href="https://www.pexels.com/photo/ceremonial-tea-set-on-wooden-surface-461428/">Photo by Pixabay</a> • <a target="_blank" href="https://icons8.com/icon/D209uPq1sEXi/leaf">Leaf icon by Icons8</a></div>
+</div>
+
+<div class="main">
+    <div class="top">
+        <p>This is not a real online service! You know you need something
+        like this in your life to help you realize your deepest dreams.
+        Sign up now to get started.</p>
+        <p>You <i>know</i> you want to.</p>
+    </div>
+        
+    <div class="mid">
+        <form action="post" id="signUp" class="form">
+            <div class="formTop">Let's do this!</div>
+
+            <div class="field">
+                <label for="firstName">First Name</label>
+                <input required type="text" name="firstName" id="firstName" placeholder="John" maxlength="50">
+                <div class="error" hidden>* Please enter your first name</div>    
+            </div>
+            
+            <div class="field">
+                <label for="lastName">Last Name</label>
+                <input required type="text" name="lastName" id="lastName" placeholder="Doe" maxlength="50">
+                <div class="error" hidden>* Please enter your last name</div>    
+            </div>
+
+            <div class="field">
+                <label for="email">Email</label>
+                <input required type="email" name="email" id="email" placeholder="johndoe123@gmail.com" maxlength="100">
+                <div class="error" hidden>* Please enter a valid email address</div>     
+            </div>
+
+            <div class="field">
+                <label for="phone">Phone Number</label>
+                <input required type="tel" name="phone" id="phone" placeholder="123-456-7890" oninvalid="">
+                <div class="error" hidden>* Please enter a valid phone number</div>    
+            </div>
+
+            <div class="field">
+                <label for="pw">Password</label>
+                <input required type="password" name="pw" id="pw" onkeydown="restrictSpace()" oninput="checkPW()">
+                <div class="bar">
+                    <div class="block"></div>
+                    <div class="block"></div>
+                    <div class="block"></div>
+                    <div class="block"></div>
+                    <div class="block"></div>
+                </div>
+                <div class="pwStrength error">
+                    <div class="min test" hidden>* At least 6 chars</div>
+                    <div class="letter test" hidden>* At least 1 letter</div>
+                    <div class="num test" hidden>* At least 1 number</div>
+                    <div class="symbol test" hidden>* At least 1 symbol</div>
+                </div>    
+            </div>
+
+            <div class="field">
+                <label for="pwConfirm">Confirm Password</label>
+                <input required type="password" name="pwConfirm" id="pwConfirm" onkeydown="restrictSpace()" oninput="checkPWConfirm()">
+                <div class="error" hidden>* Passwords must match</div>
+                <label class="showPW">
+                    <input type="checkbox" name="visibility" onclick="pwToggle()">Show Password?
+                </label>
+                
+            </div>     
+        </form>
+        <div class="success" hidden>
+            <div class="formTop">Thank you for signing up!</div>
+            <p>Here is the information you submitted:</p>
+            <ul class="userInfo">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="bottom">
+        <button onclick="checkSubmission()" onsubmit="submitSuccess()">
+            Create Account
+        </button>
+
+        <div class="txt">
+            Already have an account? <a>Log in</a></div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+<script>
+    const regex = {
+        name: /^\w{1,50}$/,
+        phone: /^\d?(-?)\d{3}\1\d{3}\1\d{4}$/,
+        letter: /\w/,
+        number: /\d/,
+        symbol: /[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~"]/
+    }
+    const form = {
+        first: document.getElementById("firstName"),
+        last: document.getElementById("lastName"),
+        email: document.getElementById("email"),
+        phone: document.getElementById("phone"),
+        pw: document.getElementById("pw"),
+        pwConfirm: document.getElementById("pwConfirm"),
+        node: document.getElementById("signUp")
+    }
+
+    function checkSubmission() {
+        const user = {};
+        user.first = checkField(form.first, regTest(form.first.value, regex.name));
+        user.last = checkField(form.last, regTest(form.last.value, regex.name));
+        user.email = checkField(form.email, form.email.checkValidity());
+        user.phone = checkField(form.phone, regTest(form.phone.value, regex.phone));
+        user.pw = checkPW();
+        user.pwConfirm = checkPWConfirm();
+        
+        if (Object.values(user).every(a => a)) return form.node.submit();
+        else return false;
+    }
+
+    //Shows/hides error tooltip; returns field str if successful, undef if not
+    function checkField(field, condition, error = findErrorNode(field)) {
+        const str = (typeof field === "string") ? field.trim() : field.value.trim();
+        error.hidden = condition;
+        return (condition) ? str : false;
+    }
+
+    function submitSuccess(user) {
+        //show indicator that form has been submitted
+        const infoList = document.getElementById(".userInfo").children;
+        const name = titleCase(user.first + " " + user.last);
+
+        infoList[0].innerHTML = "Name: " + name;
+        infoList[1].innerHTML = "Email: " + user.email;
+        infoList[2].innerHTML = "Phone: " + user.phone;
+        infoList[3].innerHTML = "Password: " + user.pw;
+        //Change success form box info text
+    }
+
+    //change both pw fields from text input to pw mode
+    function pwToggle() {        
+        if (form.pw.type === "password") {
+            form.pw.type = "text";
+            form.pwConfirm.type = "text";
+        } else {
+            form.pw.type = "password";
+            form.pwConfirm.type = "password";
+        }
+    }
+
+    function checkPW() {
+        const pw = form.pw.value;
+        const arr = [];
+        let validity;
+
+        arr.push(checkField(pw, (pw.length > 5), document.querySelector(".min.test")));
+        arr.push(checkField(pw, regTest(pw, regex.letter), document.querySelector(".letter.test")));
+        arr.push(checkField(pw, regTest(pw, regex.number), document.querySelector(".num.test")));
+        arr.push(checkField(pw, regTest(pw, regex.symbol), document.querySelector(".symbol.test")));
+        
+        validity = arr.filter(a => a).length;
+        updatePWDisplay(validity);    
+        return (validity == 4) ? pw : false;
+    }
+
+    function updatePWDisplay(validity) {
+        const pwBlocks = document.querySelectorAll(".block");
+        const pwColor = (validity == 4) ? "var(--form-dark)" : "var(--form-invalid)";
+        
+        //Changes amount of blocks depending on password conditions met
+        for (let i = 0; i <= 4; i++) {
+            // pwBlocks[i].style.backgroundColor = (i > validity)
+            //     ? "transparent"
+            //     : "var(--form-pw)"  
+            if (i > validity) pwBlocks[i].classList.add("shrunk");
+            else pwBlocks[i].classList.remove("shrunk")       
+        }
+        document.documentElement.style.setProperty('--form-pw', pwColor);
+        return true;
+    }
+
+    function checkPWConfirm() {
+        const isMatching = checkField(form.pwConfirm, (form.pwConfirm.value === form.pw.value));
+        if (!isMatching) {
+            form.pwConfirm.style.outline = "var(--form-invalid) solid 3px";
+        }
+        else form.pwConfirm.style.removeProperty("outline")
+    }
+
+    //#####UTILITY FUNCTIONS#####
+
+    function restrictSpace() {
+        if (event.keyCode == 32) return false;
+    }
+
+    function regTest(str, reg) {
+        str = str.trim();
+        return reg.test(str)
+    }
+
+    function printVals() {
+        Object.keys(form).forEach(a => console.log(a.value))
+    }
+
+    function titleCase(str) {
+        return str.replace(
+            /\w\S*/g,
+            txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    }
+
+    function findErrorNode(myNode) {
+        let curr = myNode.nextElementSibling;
+        while (!curr.classList.contains('error')) {
+            curr = curr.nextElementSibling;
+        }
+        return curr;
+    }
+
+
+</script>
+</html>
