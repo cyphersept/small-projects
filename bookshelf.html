@@ -9,57 +9,69 @@
 </head>
 
 <body>
-<div class="header">My Library</div>
 
-<div class="shelf">
-     <div class="book">
-         <div class="binding"></div>
-         <div class="newBook inner">
-            <div class="title">New Book</div>
-            <img src="https://img.icons8.com/nolan/64/add.png" alt="Add new book">
-        </div>
-     </div> 
+<div class="foreground">
+    <div class="header">My Library</div>
 
+    <div class="add" onclick="cloneTemplate()">
+        <!-- "Add new book" on hover -->
+    </div>
 
-    <div class="template">        
-        <div class="top">
-            <!-- clickable bookmarklet to show/hide  -->
-            <div class="ribbon"></div> 
-
-            <div class="bookBtns">
-                <div class="edit">
-                    <img src="https://img.icons8.com/pastel-glyph/32/000000/edit--v1.png" alt="Edit">
-                </div>
-                <div class="delete">
-                    <img src="https://img.icons8.com/pastel-glyph/32/000000/trash.png" alt="Delete">
-                </div>
+    <div class="shelf">
+        <div class="book template" onclick="this.bookObj.info()">
+            <div class="container">
+                <div class="ribbon" onclick="getBookFromNode(this).toggleRead()">Read</div>
+            </div>
+            
+            <form class="info">
+                <input type="text" class="titleIn" name="myTitle" placeholder="Title" maxlength="100">
+                <input type="text" class="authorIn" name="myAuthor" placeholder="Author" maxlength="50">
+                <input type="number" class="pagesIn" name="myPages" placeholder="Page count" maxlength="10">
+            </form>
+            <div class="buttons">
+                <div class="edit" onclick="buttonLPress(this)"></div>
+                <div class="delete" onclick="buttonLPress(this)"></div>
             </div>
         </div>
 
-        <div class="book">
-            <div class="upper">
-                <div class="binding"></div>
-                <form action="" method="post" class="bookForm inner">
-                    <input type="text" class="titleIn" name="myTitle" placeholder="Title" maxlength="100">
-                    <input type="text" class="authorIn" name="myAuthor" placeholder="Author" maxlength="100">
-                    <input type="text" class="pagesIn" name="myPages" placeholder="Page count" maxlength="25">
-                </form>
+        <div class="book first" onclick="this.bookObj.info()">
+            <div class="container">
+                <div class="ribbon" onclick="getBookFromNode(this).toggleRead()">Read</div>
             </div>
-            <div class="lower"></div>
+            
+            <form class="info">
+                <input type="text" class="titleIn" name="myTitle" placeholder="Title" maxlength="100">
+                <input type="text" class="authorIn" name="myAuthor" placeholder="Author" maxlength="50">
+                <input type="number" class="pagesIn" name="myPages" placeholder="Page count" maxlength="10">
+            </form>
+            <div class="buttons">
+                <div class="edit" onclick="buttonLPress(this)"></div>
+                <div class="delete" onclick="buttonLPress(this)"></div>
+            </div>
         </div>
-
     </div>
 </div>
 
-<a href="https://icons8.com/icons/nolan">Icons by Icons8</a>
+<div class="bg"></div>
+
 <script>
 const shelf = document.querySelector(".shelf");
 const template = document.querySelector(".template");
-let myLibrary = [];
+//const newBtn = document.querySelector('add').addEventListener(click, createNewBook);
+let myLibrary = [new Book(template)];
+let currentEdit;
 
 
 
-function Book(title, author, pages) {
+// TO-DO:
+//     - Make bookshelf scroll with invisible fade if too big
+//     - Little plant on side
+//     - Table
+//     - Fancy Background
+// https://stackoverflow.com/questions/12456399/how-to-use-this-reference-of-the-element-calling-the-function
+
+function Book(node, title="Title", author="Author", pages="Pages") {
+    this.node = node,
     this.title = title, 
     this.author = author, 
     this.pages = pages, 
@@ -68,97 +80,127 @@ function Book(title, author, pages) {
 
 Book.prototype.info = function() {
     let status = this.read ? "read" : "not yet read";
-    return `${this.title} by ${this.author}, ${this.pages} pages, ${status}`;
+    let msg = `${this.title} by ${this.author}, ${this.pages} pages, ${status}`;
+    console.log(msg)
+    return msg.toString();
 }
 
 Book.prototype.toggleRead = function(){
     this.read = !this.read;
+    this.node.querySelector('.ribbon').classList.toggle('read')
 }
 
-Book.prototype.updateDisplay = function(){
-    let status = (this.read) ? "read" : "unread";
-    this.node.querySelector('.title').innerHTML = `${this.title}`;
-    this.node.querySelector('.author').innerHTML = `${this.author}`;
-    this.node.querySelector('.pagesAndRead').innerHTML = `${this.pages} pages, ${status}`;
-}
+// Book.prototype.updateDisplay = function(){
+//     let status = (this.read) ? "read" : "unread";
+//     this.node.querySelector('.title').innerHTML = `${this.title}`;
+//     this.node.querySelector('.author').innerHTML = `${this.author}`;
+//     this.node.querySelector('.pagesAndRead').innerHTML = `${this.pages} pages, ${status}`;
+// }
 
-//Adds new book to array and clones template on DOM 
-Book.prototype.addToLibrary = function() {
-    this.node = template.cloneNode(deep);
-    this.node.className = 'book';
-    this.node.setAttribute('data-index', `${myLibrary.length}`);
-    this.updateDisplay();
+//Adds new book to array and clones template on DOM - USELESS
+// Book.prototype.addToLibrary = function() {
+//     this.node = template.cloneNode(deep);
+//     this.node.className = 'book';
+//     this.node.setAttribute('data-index', `${myLibrary.length}`);
+//     this.updateDisplay();
     
-    shelf.appendChild(this.node)
-    myLibrary.push(this);
+//     shelf.appendChild(this.node)
+//     myLibrary.push(this);
+// }
+
+Book.prototype.delete = function() {
+    // shelf.removeChild(this.node);    
+    delete this.node.bookObj;
+    this.node.remove();
 }
 
-Book.prototype.removeFromLibrary = function() {
-    myLibrary.splice(this.node.getAttribute('data-index'), 1);
-    shelf.removeChild(this.node);
+Book.prototype.confirmEdits = function() {
+    this.title = this.node.querySelector("titleIn").value;
+    this.author = this.node.querySelector("authorIn").value;
+    this.pages = this.node.querySelector("pagesIn").value;
+
+    this.toggleMode();
 }
 
-createNewBook = function(obj){
-    document.getElementById('bookForm').close();
+Book.prototype.cancelEdits = function() {
+    this.node.querySelector("titleIn").value = this.title;
+    this.node.querySelector("authorIn").value = this.author;
+    this.node.querySelector("pagesIn").value = this.pages;
+
+    this.toggleMode();
+}
+
+Book.prototype.toggleMode = function() {
+    const buttons = this.node.querySelector(".buttons");
+    const fieldsList = this.node.querySelectorAll(".info > *");
     
-}
-showForm = function(){
-    document.getElementById('bookForm').style.display = "fixed";
+    fieldsList.forEach((e) => e.readOnly = !e.readOnly);
+    buttons.classList.toggle("editMode");
 }
 
-const newBtn = document.querySelector('.template .title').addEventListener(click, createNewBook);
+// ###### DOM FUNCTIONS ######
+
+function cloneTemplate() {
+    const myBook = new Book(template.cloneNode(deep));
+    myBook.node.classList.remove("template");
+    myBook.node.bookObj = myBook;
+    // myBook.node.setAttribute('data-index', `${myLibrary.length}`);
+    // myBook.updateDisplay();
+
+    // myLibrary.push(myBook);    
+    shelf.appendChild(myBook.node)
+    return myBook;
+}
+
+buttonLPress = function(myNode) {
+    const editState = myNode.parentNode.classList.contains("editMode");
+    currentEdit.confirmEdits();
+    if (!editState) {
+        currentEdit = getBookFromNode(myNode);
+        currentEdit.toggleMode();
+    }
+}
+
+buttonRPress = function(myNode) {
+    const editState = myNode.parentNode.classList.contains("editMode");
+    const book = getBookFromNode(myNode);
+    if (!editState) { 
+        book.delete();
+    }
+    if (editState) { 
+        cancelEdits(book);
+    }
+}
+
+
+
+createNewBook = function(obj){    
+    document.getElementById('bookForm').close();    
+}
 
 close = function(){
     this.style.display.none;
 }
 
-</script>
+// ###### UTILITY FUNCTIONS ######
 
-
-
-</body>
-
-<!-- //From: https://javascript.plainenglish.io/how-to-build-complex-dom-elements-quickly-b3ead8e09647
-const utils = (function() {   
-    const template = function(obj) {
-        return {
-        className:'book',
-        innerHTML: `<h2>${obj.title}</h2><h2>${obj.title}</h2><h2>${obj.title}</h2>`,
-        attrs: {
-            dataIndex:'bar',
-            dataBaz:'garply',
-            onclick:'showModal()'      
-            }
-        }
+function getBookFromNode(myNode) {
+    // return myLibrary[myNode.dataset.index]
+    let node = myNode;
+    while (!node.bookObj) {
+        if (!node) break;
+        else node = node.parentElement;
     }
-    const createEl = function(o) {      
-      // get the type and create an element with it
-      let type = o.type || 'div';
-      let el = document.createElement(type);
-      
-       // assign properties
-       for (const key of (Object.keys(o))) {
-          if (key != 'attrs' && key != 'type') {
-            el[key] = o[key];
-          }
-       }
-       if (o.attrs) {
-            // assign attributes
-             for (let key of (Object.keys(o.attrs))) {
-               
-                // grab the value of this attribute
-                let value = o.attrs[key];
-               
-                // convert attribute key from camel case to dash syntax
-                if (key != key.toLowerCase()) {
-                   key = key.replace(/[A-Z]/g, m => "-" + m.toLowerCase());
-                }
-                // set the attribute on the element
-                el.setAttribute(key, value);
-            }
-       }
-       return el;
-   };
-   return {createEl};
-}); -->
+    return (node) ? myNode.bookObj : null;
+}
+
+
+const firstBook = document.querySelector(".book.first")
+const testBook = new Book(firstBook, "Test Book", "User", 10)
+firstBook.bookObj = testBook;
+
+
+
+</script>
+</body>
 </html>

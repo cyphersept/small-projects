@@ -5,32 +5,30 @@
     --bkg: rgb(248, 222, 184);
     --form-bkg: rgb(183, 182, 103);
     --drop-shadow: rgba(106, 64, 48, 0.5);
-    --button: rgb(117, 115, 63);
-    --button-dark: rgb(95, 104, 50);
+    --button: rgb(130, 130, 73);
+    --button-dark: rgb(105, 115, 64);
     --form-labels: rgb(248, 222, 184);
-    --form-invalid: rgb(145, 84, 78);
-    --form-dark: var(--button);
+    --form-invalid: rgb(140, 77, 70);
+    --form-dark: var(--button-dark);
     --dark-text: rgb(53, 37, 15);
-    --mid-text: rgb(106, 64, 48);
+    --med-text: rgb(104, 79, 63);
+    --vibrant: rgb(87, 100, 52);
 
-    --form-pw: var(--button)
+    --form-pw: var(--form-dark)
 }
 
 * {
     margin: 0;
     padding: 0;
     font-family: 'ABeeZee', Verdana, sans-serif;
-    color: var(--dark-text);
 }
 
-html, body {
+body, html {
     height: 100vh;
-    width: 100%;
+    width: 100vw;
     overflow: auto;
-    font-size: 20px; 
-}
-
-body {
+    font-size: 20px;
+    color: var(--dark-text); 
     display: flex;
 }
 
@@ -40,13 +38,17 @@ body {
     background-image: url("matcha.webp");
     background-position: bottom left;
     background-attachment: fixed;
+    background-size: auto max(50vmax, 100vmin);
+    min-height: 600px;
 }
+
+/* .main height not stretching with flex children? */
 
 .title {
     position: sticky;
     top: 15%;
-    background-color: rgb(98, 108, 50);
-    box-shadow: -4 4px 8px 0px rgba(0, 0, 0, 0.5);
+    background-color: var(--vibrant);
+    box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,6 +76,10 @@ body {
     background-color: var(--button);
 }
 
+.credit > a {
+    color: var(--dark-text);
+}
+
 .main {
     display: flex;
     flex-direction: column;
@@ -83,29 +89,29 @@ body {
 }
 
 .top {
-    display: flex;
-    flex-direction: column;
     justify-content: flex-end;
     flex: 1 1 auto;
-    gap: 2rem;
     max-width: 50rem;
+}
+
+.bottom {
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.top, .bottom {
+    display: flex;
+    flex-direction: column;    
+    flex: 1 1 auto;
+    gap: 2rem;
     padding: 2rem 3rem;
+    background-color: var(--bkg);
 }
 
 .mid {
     padding: 1.5rem 3rem 1.75rem 3rem;
     background-color: var(--form-bkg);
     box-shadow: 0 4px 8px 0px var(--drop-shadow);
-}
-
-.bottom {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex: 1 1 auto;
-    gap: 2rem;
-    padding: 2rem 3rem;
 }
 
 .form {
@@ -137,6 +143,7 @@ input {
     border-radius: 6px;
     font-size: 1rem;
     padding: 3px;
+    color: var(--dark-text);
 }
 
 .error, .error > * {
@@ -177,52 +184,70 @@ button {
     border-style: none;
     box-shadow: 0 4px 8px 0px var(--drop-shadow);
     font-size: 1rem;
-    background-color: var(--button);
+    background-color: var(--button-dark);
     color: white;
     transition: 0.25s ease;
 }
-
-button:hover{
-    background-color: var(--button-dark);
-    transform: scale(0.9);
-    
-}
-
-
 
 .field > input:focus, textarea:focus, select:focus {
     outline: var(--form-dark) solid 3px;
 }
 
 .showPW {
+    font-size: 0.8rem;
     display: flex;
-    font-size: 1rem;
+    gap: 4px;
     margin-top: 4px;
-}
-
-input[type="checkbox"] {
-    appearance: none;
-    margin: 0 4px 0 0 ;
-    font: inherit;    
-    width: 20px;
-    height: 20px;
-    padding: 2px;
-    border: 3px solid var(--button);
-    border-radius: 4px;
-    display: flex;
-    justify-content: center;
     align-items: center;
 }
 
-input[type="checkbox"]::before {
-    content: "";
-    min-width: 10px;
-    min-height: 10px;
+.visibility {
+    width: 0.4rem;
+    height: 0.4rem;
+    display: flex;
+    border-radius: 4px;
+    border: var(--form-dark) 3px solid;
+    gap: 4px;
+    padding: 3px;
+
+}
+
+.check {
+    flex: 1 0 auto;
+    margin: -1px;
+    border-radius: 2px;
     transform: scale(0);
+    background-color: var(--dark-text);
     transition: 120ms transform ease-in-out;
-    box-shadow: inset 1em 1em var(--button);
   }
 
-  input[type="checkbox"]:checked::before {
+.check.full {
     transform: scale(1);
   }
+
+.success > p {
+    margin-top: 1rem;
+}
+
+button:hover{
+    background-color: var(--vibrant);
+    transform: scale(1.05);    
+}
+
+button:active{
+    transform: scale(0.975); 
+}
+
+a {
+    color: var(--button-dark);
+}
+
+span {
+    color: var(--dark-text);
+}
+
+li {
+    color: var(--vibrant);
+    list-style: none;
+    margin: 6px 1rem;
+}

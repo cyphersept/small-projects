@@ -14,16 +14,16 @@
 }
 
 * {
-    border: 2px solid black;
+    border: 2px solid rgb(184, 31, 57);
 }
 
-body, .shelf, .book .inner, .top, .bookBtns, .book {
+body, .shelf, .book, .info, .buttons {
     display: flex;
 }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 32px;
+    font-size: 20px;
     color: var(--my-fuschia);
     background-color: var(--my-pink);    
     flex-direction: column;
@@ -43,17 +43,49 @@ body {
     border: 3px solid var(--my-fuschia);
     border-radius: 8px;
     background-color: pink;
+    gap: 8px;
+    align-items: center;
+    flex-direction: column;
 }
 
-.book .inner{
+.book {
+    flex: 1 1 auto;
+    width: 100%;
+    background-color: var(--my-fuschia);
+    height: 2rem;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.container {
+    width: max(15%, 5rem);
+    display: flex;
+    /* height: 2rem; */
+}
+
+.ribbon {
+    background-color: var(--jade);
+    color: var(--my-teal);
+    font-size: 0px;
+    padding: 0.5rem;
+
+    width: 20%;
+    transition: 120ms width ease-in-out, 120ms font-size;
+}
+
+.ribbon.read, .ribbon:hover {
+    font-size: 1rem;
+    width: 100%;
+}
+
+.info{
     background-color: var(--my-fuschia);
     color: var(--dark);
     font-size: 1rem;
-    flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    padding-right: calc(5*var(--page-size) + 0.5rem);
-    padding-left: 0.5rem;
+    gap: 2rem;
+    width: 50%;
 }
 
 .template {
@@ -72,20 +104,16 @@ body {
     padding: 1rem;
 }
 
-.ribbon{
+/* .ribbon{
     width: 0; 
     height: calc(16*var(--ribbon-size)); 
     border-right: calc(5*var(--ribbon-size)) solid var(--my-yellow);
     border-left: calc(5*var(--ribbon-size)) solid var(--my-yellow);
     border-bottom: calc(4*var(--ribbon-size)) solid transparent;
     border-radius: var(--ribbon-size) var(--ribbon-size) 0 0;
-}
+} */
 
-.book {
-    background-color: var(--my-fuschia);
-    width: 10rem;
-    height: 14rem;
-}
+
 
 .binding {
     border: 4 px solid var(--my-fuschia);
@@ -116,12 +144,37 @@ input[type="text"]{
     border-radius: 4px;
 }
 
-input[type="text"]:disabled {
-    background-color: transparent;
-    color: var(--my-purple);
-}
-
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: var(--med-pink);
     opacity: 1; /* Firefox */
-  }
+}
+
+.template {
+    display: none;
+}
+
+.edit {
+
+}
+
+.delete {
+
+}
+
+.editMode .edit {
+
+}
+
+.editMode .delete {
+
+}
+
+input[readonly]{
+    border-style: none;
+    background-color: transparent;
+    color: var(--my-purple);
+}
+    
+input:not([readonly]){
+    
+}

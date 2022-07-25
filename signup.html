@@ -73,11 +73,14 @@
 
             <div class="field">
                 <label for="pwConfirm">Confirm Password</label>
-                <input required type="password" name="pwConfirm" id="pwConfirm" onkeydown="restrictSpace()" oninput="checkPWConfirm()">
+                <input required type="password" name="pwConfirm" id="pwConfirm" onkeydown="restrictSpace()" oninput="checkPWConfirm()"> 
+                <div class="showPW">
+                    <div class="visibility" onclick="pwToggle()">
+                        <div class="check"></div>
+                    </div>
+                    <div>Show Password?</div> 
+                </div>
                 <div class="error" hidden>* Passwords must match</div>
-                <label class="showPW">
-                    <input type="checkbox" name="visibility" onclick="pwToggle()">Show Password?
-                </label>
                 
             </div>     
         </form>
@@ -94,22 +97,21 @@
     </div>
     
     <div class="bottom">
-        <button onclick="checkSubmission()" onsubmit="submitSuccess()">
+        <button onclick="checkSubmission()">
             Create Account
         </button>
 
-        <div class="txt">
-            Already have an account? <a>Log in</a></div>
+        <div>
+            Already have an account? <a><b>Log in</b></a></div>
         </div>
     </div>
 
-
 </div>
-</body>
+
 <script>
     const regex = {
         name: /^\w{1,50}$/,
-        phone: /^\d?(-?)\d{3}\1\d{3}\1\d{4}$/,
+        phone: /^(\d-?)?\d{3}(-?)\d{3}\2\d{4}$/,
         letter: /\w/,
         number: /\d/,
         symbol: /[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~"]/
@@ -124,19 +126,6 @@
         node: document.getElementById("signUp")
     }
 
-    function checkSubmission() {
-        const user = {};
-        user.first = checkField(form.first, regTest(form.first.value, regex.name));
-        user.last = checkField(form.last, regTest(form.last.value, regex.name));
-        user.email = checkField(form.email, form.email.checkValidity());
-        user.phone = checkField(form.phone, regTest(form.phone.value, regex.phone));
-        user.pw = checkPW();
-        user.pwConfirm = checkPWConfirm();
-        
-        if (Object.values(user).every(a => a)) return form.node.submit();
-        else return false;
-    }
-
     //Shows/hides error tooltip; returns field str if successful, undef if not
     function checkField(field, condition, error = findErrorNode(field)) {
         const str = (typeof field === "string") ? field.trim() : field.value.trim();
@@ -144,20 +133,41 @@
         return (condition) ? str : false;
     }
 
-    function submitSuccess(user) {
-        //show indicator that form has been submitted
-        const infoList = document.getElementById(".userInfo").children;
-        const name = titleCase(user.first + " " + user.last);
+    //Check if submission is valid and display errors
+    function checkSubmission() {
+        const user = {};
+        user.first = checkField(form.first, regTest(form.first.value, regex.name));
+        user.last = checkField(form.last, regTest(form.last.value, regex.name));
+        user.email = checkField(form.email, form.email.checkValidity());
+        user.phone = checkField(form.phone, regTest(form.phone.value, regex.phone));
+        user.pw = checkPW();
+        user.pwConfirm = checkField(form.pwConfirm, (form.pwConfirm.value === form.pw.value));
+        
+        if (Object.values(user).every(a => a)) {
+            submitSuccess(user);
+            return true;
+        }
+        else return false;
+    }
 
-        infoList[0].innerHTML = "Name: " + name;
-        infoList[1].innerHTML = "Email: " + user.email;
-        infoList[2].innerHTML = "Phone: " + user.phone;
-        infoList[3].innerHTML = "Password: " + user.pw;
+    //Shows what has been submitted into the form
+    function submitSuccess(user) {
+        const infoList = document.querySelector(".userInfo").children;
+        const name = titleCase(user.first + " " + user.last);
         //Change success form box info text
+        infoList[0].innerHTML = "• <span>Name:</span> " + name;
+        infoList[1].innerHTML = "• <span>Email:</span> " + user.email;
+        infoList[2].innerHTML = "• <span>Phone:</span> " + user.phone;
+        infoList[3].innerHTML = "• <span>Password:</span> " + user.pw;
+
+        document.querySelector(".success").hidden = false;
+        form.node.style.display = "none";
     }
 
     //change both pw fields from text input to pw mode
     function pwToggle() {        
+        const check = document.querySelector(".check");
+        check.classList.toggle("full");
         if (form.pw.type === "password") {
             form.pw.type = "text";
             form.pwConfirm.type = "text";
@@ -184,26 +194,33 @@
 
     function updatePWDisplay(validity) {
         const pwBlocks = document.querySelectorAll(".block");
-        const pwColor = (validity == 4) ? "var(--form-dark)" : "var(--form-invalid)";
+        const pwColor = (validity == 4) ? "var(--form-dark)" : "var(--form-invalid)"
         
-        //Changes amount of blocks depending on password conditions met
+        //Changes blocks depending on password conditions met
         for (let i = 0; i <= 4; i++) {
-            // pwBlocks[i].style.backgroundColor = (i > validity)
-            //     ? "transparent"
-            //     : "var(--form-pw)"  
             if (i > validity) pwBlocks[i].classList.add("shrunk");
             else pwBlocks[i].classList.remove("shrunk")       
         }
+        
+        //Update field outline colour
+        if (validity == 4) form.pw.style.removeProperty("outline");
+        else form.pw.style.outline = "var(--form-invalid) solid 3px";
+
         document.documentElement.style.setProperty('--form-pw', pwColor);
         return true;
     }
 
     function checkPWConfirm() {
-        const isMatching = checkField(form.pwConfirm, (form.pwConfirm.value === form.pw.value));
+        const isMatching = form.pwConfirm.value === form.pw.value;
         if (!isMatching) {
             form.pwConfirm.style.outline = "var(--form-invalid) solid 3px";
+            return false;
         }
-        else form.pwConfirm.style.removeProperty("outline")
+        else {
+            form.pwConfirm.style.removeProperty("outline");
+            return form.pwConfirm.value;
+        }
+
     }
 
     //#####UTILITY FUNCTIONS#####
@@ -237,4 +254,5 @@
 
 
 </script>
+</body>
 </html>
