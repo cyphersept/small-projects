@@ -1,40 +1,53 @@
+* {
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+}
+
+html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    color: white;
+    background-color: var(--my-teal);
+    height: 100%;
+}
 
 
- .sketch {
+body {
     display: flex;
     flex-direction: column;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: white;
-    padding: 40px;
-    background-color: rgb(0, 183, 196);
     align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    gap: 1rem;
+    height: 100%;
 }
 
 .buttons {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-size: 20px;
     font-weight: bold;
-    padding: 10px 0;
-    min-width: 600px;
 }
 
-.center, .left {
+.tools, .left {
     display: flex;
     gap: 10px;
     align-items: center;
 }
 
-.drawpad{
-    display: flex;
-    flex-wrap: wrap;
-    width: 160px;
+.drawpad {
     border: 4px solid;
 }
 
-.tile {
+.row {
     display: flex;
+}
+
+.tile {
+    display: inline-block;
     min-height: 10px;
     min-width: 10px;
     background-color: white;
@@ -42,25 +55,59 @@
 
 button, input {
     border: 3px solid;
-    color: rgb(0, 120, 175);
+    color: var(--r-blue-3);
     box-sizing: border-box;      
-    max-width: 80px;
-    box-shadow: inset -2px -2px 0px rgba(75, 234, 255, 0.6);
+    box-shadow: inset -0.125em -0.125em 0px var(--r-teal-1);
+    transition: box-shadow 0.05s cubic-bezier(.5,0,.6,1);
 }
 
 button, input, .drawpad{
-    padding: 8px 8px;
-    background-color: rgb(255, 255, 255);
-    border-color: rgb(0, 120, 175);
+    padding: 8px;
+    background-color: white;
+    border-color: var(--r-blue-3);
     border-radius: 8px;
-    font-size: 16px;    
+    font-size: 16px;
 }
 
-button:hover, input:hover, .toggled {
-    background-color: rgb(110, 250, 255);
-    box-shadow: inset -2px -2px 0px rgba(0, 157, 196, 0.8);
+input {
+    max-width: 6rem;
+}
+
+button:hover, input:hover {
+    background-color: var(--my-lime);
+    box-shadow: inset -0.125em -0.125em 0px var(--r-teal-2);
+    transition: box-shadow 0.05s cubic-bezier(.6,0,.5,1);
 }
 
 button:active {
-    background-color: rgb(238, 252, 87)
+    background-color: var(--r-teal-1);
+    box-shadow: inset 0.125em 0.125em 0px var(--r-blue-1);
+    transition: none;
 }
+
+input:focus {
+    outline: 3px solid white;
+}
+
+.toggled {
+    background-color: var(--r-teal-1);
+    box-shadow: inset -0.125em -0.125em 0px var(--r-blue-1);
+}
+
+.shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97);
+}
+
+@keyframes shake {
+    0% { transform: translate(4px, 2px);}
+    10% { transform: translate(-2px, -3px);}
+    20% { transform: translate(5px, 4px);}
+    30% { transform: translate(-3px, -4px);}
+    40% { transform: translate(1px, -1px);}
+    50% { transform: translate(-1px, 6px);}
+    60% { transform: translate(-3px, 1px);}
+    70% { transform: translate(3px, 3px);}
+    80% { transform: translate(-4px, -4px);}
+    90% { transform: translate(3px, 3px);}
+    100% { transform: translate(-1px, -2px);}
+  }

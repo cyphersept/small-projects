@@ -64,7 +64,7 @@ box {
     padding: 4px 8px;
     border-radius: 4px;
     height: 64px;
-    box-shadow: inset 2px 2px 0px 0 rgba(154, 52, 103, 0.6),
+    box-shadow: inset 0.1em 0.1em 0px 0 rgba(154, 52, 103, 0.6),
 }
 
 .input {
@@ -91,13 +91,13 @@ button {
     color: var(--med-pink);
     background-color: white;
 
-    box-shadow: inset -3px -3px 0px 0 rgba(154, 52, 103, 0.6),
-                inset 2px 2px rgba(119, 250, 255, 0.6)
+    box-shadow: inset -0.15em -0.15em 0px 0 rgba(154, 52, 103, 0.6),
+                inset 0.1em rgba(119, 250, 255, 0.6)
 }
 
 button:active{
     background-color: var(--jade);
-    box-shadow: inset 2px 2px 0px 0 rgba(154, 52, 103, 0.6);
+    box-shadow: inset 0.1em 0px 0 rgba(154, 52, 103, 0.6);
 }
 
 .commands{

@@ -2,23 +2,26 @@
 <html lang= "en">
 
 <head>
-    <meta charset="UTF-8"
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Etch-A-Sketch</title>
+    <link rel="stylesheet" href="../palette.css">
     <link rel="stylesheet" href="etch-a-sketch-style.css">
 </head>
 
 <!-- TODO: Dynamically change tile size so that overall dimensions of canvas remains fixed -->
 
-<body class="sketch" onload="clearPad();">
+<body onload="clearPad();">
+    <h1 id="sketch">Etch-A-Sketch</h1>
+
     <div class="buttons">
         <div class="left">
-            <button class="clear">❌New</button>
-            <label for="size">Size:</label>
-            <input type="number" id="size" value="16" min="1" max="100" required="true">
-        </div>
-
-        <div class="center">
-            <div>Etch-A-Sketch</div>
+            <button class="clear">🔄 New</button>
+            <label for="sizeX">Width:</label>
+            <input type="number" id="sizeX" value="32" min="1" max="100" required="true">
+            <label for="sizeY">Height:</label>
+            <input type="number" id="sizeY" value="24" min="1" max="100" required="true">
         </div>
 
         <div class="tools">
@@ -28,11 +31,11 @@
         </div>
     </div>
 
-    <div class="drawpad">
+    <div class="drawpad" draggable="false">
     </div>
 
 <script>
-    const root= document.querySelector(".drawpad");
+    const pad= document.querySelector(".drawpad");
     
     const tools = document.querySelector('.tools');
     const clearBtn = document.querySelector('.clear');
@@ -40,17 +43,20 @@
     const rainbowBtn = tools.querySelector('.rainbow');
     const eraserBtn = tools.querySelector('.eraser');
         
-    let dimension= 16;
-    let currentSize= 1;
     let selectedTool= penBtn;    
     let isDrawing = false;
     
-    clearBtn.onclick = () => clearPad();
+    clearBtn.onclick = () => {pad.classList.add("shake"); clearPad()};
+    pad.addEventListener('animationend', function() {pad.classList.remove('shake')})
     penBtn.onclick = () => {toggleBtn(penBtn); selectedTool = penBtn};
     rainbowBtn.onclick = () => {toggleBtn(rainbowBtn); selectedTool = rainbowBtn};
     eraserBtn.onclick = () => {toggleBtn(eraserBtn); selectedTool = eraserBtn;};
     document.addEventListener("mousedown", () => {isDrawing = true});
     document.addEventListener("mouseup", () => {isDrawing = false});
+
+    pad.addEventListener('mousemove', (e) => { //colour tiles with tools
+                if (isDrawing == true && e.target.classList.contains("tile")) changeColour(e.target);
+            });
     
     function toggleBtn(btn) {
         selectedTool.classList.remove("toggled");
@@ -65,33 +71,40 @@
     }
     
     function updateSize() {     //Changes targetSize according to input
-        const src = document.querySelector("#size");
-        let newSize = src.value;
-        newSize = (newSize > 100) ? 100
-            : (newSize < 1) ? 1 
-                : newSize;
-        src.value = newSize;
-        dimension = parseInt(newSize);
-        const newWidth = dimension*10;
-        root.style.width = `${newWidth}px`;
+        const srcX = document.querySelector("#sizeX");
+        const srcY = document.querySelector("#sizeY");
+        let newSizeX = Math.min(Math.max(parseInt(srcX.value), 1), 100);
+        let newSizeY = Math.min(Math.max(parseInt(srcY.value), 1), 100);
+        srcX.value = newSizeX;
+        srcY.value = newSizeY;
         // document.querySelector(".buttons").style.width = `${newWidth}px`;
-        return newSize;
+        return {width: newSizeX, height: newSizeY};
     }
 
-    function updatePad(targetSize) {
-        const target = targetSize*targetSize;
-        let curr = root.childElementCount;
-        for (curr; curr < target; curr++) {
-            let newTile = document.createElement("div");
-            newTile.classList.add('tile');
-            newTile.addEventListener('mousemove', () => { //colour tiles with tools
-                if (isDrawing == true) changeColour(newTile);
-            });
-            root.appendChild(newTile); 
+    function updatePad(target) {
+        // If rows are less that target count, add and populate rows
+        for (let y = 0; y < target.height; y++) {
+            let row = pad.children[y] || false;
+            if (y >= pad.childElementCount) {
+                row = document.createElement("div");
+                row.classList.add("row")
+                pad.appendChild(row);
+            }
+            // Add extra tiles
+            for (let x = row.childElementCount; x < target.width; x++) {
+                let newTile = document.createElement("div");
+                newTile.classList.add("tile");
+                row.appendChild(newTile)
+            }
+            // Delete extra tiles
+            for (let x = row.childElementCount; x > target.width; x--) {
+                row.removeChild(row.lastChild)
+            }
         }
-        for (curr; curr > target; curr--) {
-            root.removeChild(root.lastChild);
-    }
+        // Delete extra rows
+        for (let y = pad.childElementCount; y > target.height; y--) {
+            pad.removeChild(pad.lastChild);
+        }
 }
     
     function randomInt(min, max) {

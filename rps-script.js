@@ -1,22 +1,22 @@
-const rock = {
-    name:"Rock",
-    upper:this.name.toUpperCase(),
-    button: document.querySelector(".left"),
-    emoji:"✊"
-}
-
-const paper = {
-    name:"Paper",
-    upper:this.name.toUpperCase(),
-    button: document.querySelector('.mid'),
-    emoji:"🖐" + String.fromCodePoint("65039")
-}
-
-const scissors = {
-    name:"Scissors",
-    upper:this.name.toUpperCase(),
-    button: document.querySelector('.right'),
-    emoji:"✌" + String.fromCodePoint("65039")
+const rpsMode = {
+    rock: {
+        name:"Rock",
+        upper:this.name.toUpperCase(),
+        button: document.querySelector(".left"),
+        emoji:"✊"
+    },
+    paper: {
+        name:"Paper",
+        upper:this.name.toUpperCase(),
+        button: document.querySelector('.mid'),
+        emoji:"🖐" + String.fromCodePoint("65039")
+    },
+    scissors: {
+        name:"Scissors",
+        upper:this.name.toUpperCase(),
+        button: document.querySelector('.right'),
+        emoji:"✌" + String.fromCodePoint("65039")
+    },
 }
 
 const player = {
@@ -34,11 +34,11 @@ const cpu = {
 }
 
 const msg = document.querySelector('.rps .msg');
-rock.weakness = paper;
-paper.weakness = scissors;
-scissors.weakness = rock;
-const options = [rock, paper, scissors];
-let selection //selected button
+rock.weaknesses = [paper];
+paper.weaknesses = [scissors];
+scissors.weaknesses = [rock];
+let options = [rock, paper, scissors];
+let selection; //selected button
 
 
 
@@ -71,10 +71,10 @@ function computerPlay() {
     return result;
 }
 
-function playerPlay(mode) {    
+function playerPlay(mode, msg = "Rock, paper, or scissors?") {    
     let result;
     if (mode == "UI") result = selection;
-    else result = playerInput("Rock, paper, or scissors?"); //repeats until valid
+    else result = playerInput(msg); //repeats until valid
     updateText(`You chose ${result.name}!`, player.text);
     player.icon.textContent = result.emoji;
     return result;
@@ -82,10 +82,10 @@ function playerPlay(mode) {
 
 function pickWinner(playerPick, cpuPick) {
     let text = "It's a tie!"
-    if (playerPick === cpuPick.weakness) {
+    if (cpuPick.weaknesses.includes(playerPick)) {
         text = "You win the round!"
         updateScore(player)
-    } else if (cpuPick === playerPick.weakness) {
+    } else if (playerPick.weaknesses.includes(cpuPick)) {
         text = "CPU wins the round!"
         updateScore(cpu)
     }
@@ -134,7 +134,7 @@ function validateInput(input) { //Returns index of valid input OR undefined
 
 function playGame(mode) {   
 
-    if (mode == "UI") while (player.score < 5 && cpu.score < 5) playRound(UI);
+    if (mode == "UI") while (player.score < 3 && cpu.score < 3) playRound(UI);
     else for (let i = 0; i < 5; i++) playRound();
     
     let text = "[It's a tie! Play again?]";

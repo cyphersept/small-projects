@@ -1,0 +1,89 @@
+:root {
+    --r-brown-1: #ab947a;
+    --r-brown-2: #966c6c;
+    --r-brown-3: #625565;
+    --r-brown-4: #3e3546;
+    --r-brown-5: #2e222f;
+
+    --r-gray-1: #ffffff;
+    --r-gray-2: #c7dcd0;
+    --r-gray-3: #9babb2;
+    --r-gray-4: #7f708a;
+    --r-gray-5: #694f62;
+
+    --r-red-1: #f57d4a;
+    --r-red-2: #ea4f36;
+    --r-red-3: #b33831;
+    --r-red-4: #6e2727;
+
+    --r-orange-1: #f9c22b;
+    --r-orange-2: #f79617;
+    --r-orange-3: #fb6b1d;
+    --r-orange-4: #e83b3b;
+    --r-orange-5: #ae2334;
+
+    --r-yellow-1: #fbb954;
+    --r-yellow-2: #e6904e;
+    --r-yellow-3: #cd683d;
+    --r-yellow-4: #9e4539;
+    --r-yellow-5: #7a3045;
+
+    --r-lime-1: #fbff86;
+    --r-lime-2: #d5e04b;
+    --r-lime-3: #a2a947;
+    --r-lime-4: #676633;
+    --r-lime-5: #4c3e24;
+
+    --r-green-1: #cddf6c;
+    --r-green-2: #91db69;
+    --r-green-3: #1ebc73;
+    --r-green-4: #239063;
+    --r-green-5: #165a4c;
+
+    --r-evergreen-1: #b2ba90;
+    --r-evergreen-2: #92a984;
+    --r-evergreen-3: #547e64;
+    --r-evergreen-4: #374e4a;
+    --r-evergreen-5: #313638;
+
+    --r-teal-1: #8ff8e2;
+    --r-teal-2: #30e1b9;
+    --r-teal-3: #0eaf9b;
+    --r-teal-4: #0b8a8f;
+    --r-teal-5: #0b5e65;
+
+    --r-blue-1: #8fd3ff;
+    --r-blue-2: #4d9be6;
+    --r-blue-3: #4d65b4;
+    --r-blue-4: #484a77;
+    --r-blue-5: #323353;
+
+    --r-purple-1: #eaaded;
+    --r-purple-2: #a884f3;
+    --r-purple-3: #905ea9;
+    --r-purple-4: #6b3e75;
+    --r-purple-5: #45293f;
+
+    --r-mauve-1: #ed8099;
+    --r-mauve-2: #cf657f;
+    --r-mauve-3: #a24b6f;
+    --r-mauve-4: #753c54;
+
+    --r-pink-1: #fdcbb0;
+    --r-pink-2: #fca790;
+    --r-pink-3: #f68181;
+    --r-pink-4: #f04f78;
+    --r-pink-5: #c32454;
+    --r-pink-6: #831c5d;
+
+    --my-teal: rgb(0, 183, 196);
+    --my-lime: rgb(238, 252,87);
+    --my-orange: rgb(255, 159, 95);
+    --my-fuschia: rgb(228, 62, 128);
+    --my-purple: rgb(154, 52, 142);
+    --my-yellow: rgb(255, 235, 121);
+    --my-pink: rgb(255, 182, 219);
+    --med-pink: rgb(255, 146, 201);
+    --dark: rgb(136, 4, 120);
+    --jade: rgb(157, 226, 200);
+}
