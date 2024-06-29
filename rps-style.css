@@ -1,39 +1,59 @@
-
-:root {
-    --my-teal: rgb(0, 183, 196);
-    --my-lime: rgb(238, 252,87);
-    --my-orange: rgb(255, 159, 95);
-    --my-fuschia: rgb(228, 62, 128);
-    --my-purple: rgb(154, 52, 142);
-    --my-yellow: rgb(255, 235, 121);
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.big, h1 {
-    font-size: 32px;
+html, body {
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+}
+
+.reg {
+    font-size: 1rem;
+}
+.med {
+    font-size: 1.5rem;
+}
+
+.big {
+    font-size: 1.75rem;
 }
 
 .xl {
-    font-size: 64px;
+    font-size: 3rem;
 }
 
-.rps{
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.column {
     display: flex;
     flex-flow: column;
+}
 
-    max-width: 500px;
-    max-height: 800px;
-    padding: 40px;
+.rps {
+    gap: 1rem;
 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 24px;
+    width: 100%;
+    padding: 2rem;
+
     font-weight: bold;
     text-align: center;
     color: white;
     background-color: var(--my-orange);
 }
 
+.modes {
+    gap: 16px;
+}
+
 .main {
-    padding: 24px;
+    padding: 1rem 1.5rem;
     background-color: white;
     outline: var(--my-fuschia) solid 3px;
     color: var(--my-fuschia);
@@ -41,9 +61,6 @@
 }
 
 .arena {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     gap: 16px;
 }
 
@@ -53,50 +70,102 @@
     margin: 0 0 8px 0;   
 }
 
-.player, .cpu, .played, .vs {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    justify-content: center;
-
-    box-sizing: border-box;
-    width: 166px;
+.vs {
+    width: auto;
 }
 
-.played {
+.stage {
     border: 3px solid var(--my-orange);
     border-radius: 8px;
     background-color: var(--my-yellow);
     color: var(--my-orange);;
-    height: 166px;
-    gap: 0px;
-    margin-bottom: 16px;
+    padding: 1rem 0px;
+    width: 10.5rem;
+}
+
+.msg {
+    margin-top: 0.5rem;
+    white-space: pre-wrap;
 }
 
 .options {
+    margin-top: 0.5rem;
     display: flex;
     flex: 1 0 auto;
-    gap: 20px;
+    gap: 1.25rem;
     justify-content: space-between;
-    margin-top: 20px;
+    align-items: start;
 }
 
-button{
+button {
     display: flex;
     justify-content: center;
-    flex: 1 1 100px;
+    align-items: center;
     
     border: 3px solid var(--my-fuschia);
+    font-weight: bold;
     border-radius: 8px;
     color: var(--my-orange);
     background-color: var(--my-yellow);
-    font-size: 48px;     
-    padding-bottom: 16px;
-    box-shadow: inset -4px -4px 0px rgba(225, 82, 161, 0.6);
+    font-size: 2.5rem;     
+    width: 6rem;
+    min-width: -moz-fit-content;
+    min-width: fit-content;
+    padding: 0.65rem 1rem 1rem 1rem;
+    box-shadow: inset -0.25rem -0.25rem 0px rgba(225, 82, 161, 0.6);
+    transition: box-shadow 0.02s cubic-bezier(.6,0,.5,1);
 }
 
+.options button {
+    height: 5.5rem;
+}
+
+button:hover, input:hover {
+    background-color: var(--r-lime-1);
+    box-shadow: inset -0.25rem -0.25rem 0px var(--r-mauve-1);
+    transition: box-shadow 0.02s cubic-bezier(.6,0,.5,1);
+}
 
 button:active {
     background-color: var(--my-orange);
-    box-shadow: inset 4px 4px 0px rgba(225, 82, 161, 0.6);
+    box-shadow: inset 0.25rem 0.25rem 0px rgba(225, 82, 161, 0.6);
+    color: var(--my-fuschia);
+    transition: none;
+}
+
+.shake1 {
+    animation: jump-shake 0.5s ease-in-out;
+}
+
+.shake2 {
+    animation: horizontal-shake 0.4s ease-in-out;
+}
+
+.bob {
+    animation: bob 2s cubic-bezier(.6, 0.1, .3, 1) 0.5s infinite;
+    transform-origin: bottom;
+}
+
+/* https://unused-css.com/blog/css-shake-animation/ */
+@keyframes jump-shake {
+    0% { transform: translateX(0) }
+    15%, 85% { transform: translateY(-9px) }
+    35%, 55% { transform: translateY(-9px) rotate(17deg) }
+    45%, 65% { transform: translateY(-9px) rotate(-17deg) }
+    100% { transform: translateY(0) rotate(0) }
+}
+
+@keyframes horizontal-shake {
+    0%, 50%, 80% { transform: translateX(0) }
+    20%, 60% { transform: translateX(0.2rem) }
+    30%, 70% { transform: translateX(-0.2rem) }
+    40% { transform: translateX(0.2rem) }
+  }
+
+@keyframes bob {
+    0% { transform: translateY(0rem) scale(1, 1) }
+    15% { transform: translateY(-0.5rem) scale(.95,1.05)}
+    30% { transform: translateY(0.1rem) scale(1.1,0.9)}
+    35% { transform: translateY(0rem) scale(1.05, 0.95) }
+    40% { transform: translateY(0rem) scale(1, 1) }
 }

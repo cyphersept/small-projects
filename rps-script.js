@@ -1,21 +1,136 @@
 const rpsMode = {
     rock: {
-        name:"Rock",
-        upper:this.name.toUpperCase(),
+        id: "Rock",
+        lower: "rock",
         button: document.querySelector(".left"),
-        emoji:"✊"
+        weaknesses: {
+            paper: "Paper covers rock!"
+        },
+        emoji: "✊"
     },
     paper: {
-        name:"Paper",
-        upper:this.name.toUpperCase(),
+        id: "Paper",
+        lower: "paper",
         button: document.querySelector('.mid'),
-        emoji:"🖐" + String.fromCodePoint("65039")
+        weaknesses: {
+            scissors: "Scissors cut paper!"
+        },
+        emoji: "🖐" + String.fromCodePoint("65039")
     },
     scissors: {
-        name:"Scissors",
-        upper:this.name.toUpperCase(),
+        id: "Scissors",
+        lower: "scissors",
         button: document.querySelector('.right'),
-        emoji:"✌" + String.fromCodePoint("65039")
+        weaknesses: {
+            rock: "Rock crushes scissors!"
+        },
+        emoji: "✌" + String.fromCodePoint("65039")
+    },
+}
+
+const spockMode = {
+    rock: {
+        id: "Rock",
+        lower: "rock",
+        button: document.querySelector(".left"),
+        weaknesses: {
+            paper: "Paper covers rock!",
+            spock: "Spock vaporizes rock!"
+        },
+        emoji: "✊"
+    },
+    paper: {
+        id: "Paper",
+        lower: "paper",
+        button: document.querySelector('.mid'),
+        weaknesses: {
+            scissors: "Scissors cut paper!",
+            lizard: "Lizard eats paper!"
+        },
+        emoji: "🖐" + String.fromCodePoint("65039")
+    },
+    scissors: {
+        id: "Scissors",
+        lower: "scissors",
+        button: document.querySelector('.right'),
+        weaknesses: {
+            rock: "Rock crushes scissors!",
+            spock: "Spock smashes scissors!"
+        },
+        emoji: "✌" + String.fromCodePoint("65039")
+    },
+    lizard: {
+        id: "Lizard",
+        lower: "lizard",
+        button: document.querySelector('.right'),
+        weaknesses: {
+            rock: "Rock crushes lizard!",
+            scissors: "Scissors decapitate lizard!"
+        },
+        emoji: "🤏" + String.fromCodePoint("65039")
+    },
+    spock: {
+        id: "Spock",
+        lower: "spock",
+        button: document.querySelector('.right'),
+        weaknesses: {
+            paper: "Paper disproves Spock!",
+            lizard: "Lizard poisons Spock!"
+        },
+        emoji: "🖖" + String.fromCodePoint("65039")
+    },
+}
+
+const wuxingMode = {
+    wood: {
+        id: "Wood",
+        lower: "wood",
+        button: document.querySelector(".left"),
+        weaknesses: {
+            fire: "Fire burns wood!",
+            metal: "Metal snaps wood!"
+        },
+        emoji: "🌳"
+    },
+    fire: {
+        id: "Fire",
+        lower: "fire",
+        button: document.querySelector('.mid'),
+        weaknesses: {
+            earth: "Earth smothers fire!",
+            water: "Water extinguishes fire!"
+        },
+        emoji: "🔥" + String.fromCodePoint("65039")
+    },
+    earth: {
+        id: "Earth",
+        lower: "earth",
+        button: document.querySelector('.right'),
+        weaknesses: {
+            metal: "Metal impoverishes earth!",
+            wood: "Wood depletes earth!"
+        },
+        emoji: "🌱" + String.fromCodePoint("65039")
+    },
+    metal: {
+        id: "Metal",
+        lower: "metal",
+        button: document.querySelector('.right'),
+        weaknesses: {
+            water: "Water rusts metal!",
+            fire: "Fire melts metal!"
+        },
+        emoji: "🪙" + String.fromCodePoint("65039")
+    },
+    water: {
+        id: "Water",
+        lower: "water",
+        button: document.querySelector('.right'),
+        weaknesses: {
+            wood: "Wood absorbs water!",
+            earth: "Earth blocks water!"
+        },
+        emoji: "🌊" + String.fromCodePoint("65039")
     },
 }
 
@@ -34,60 +149,78 @@ const cpu = {
 }
 
 const msg = document.querySelector('.rps .msg');
-rock.weaknesses = [paper];
-paper.weaknesses = [scissors];
-scissors.weaknesses = [rock];
-let options = [rock, paper, scissors];
+let mode = rpsMode;
 let selection; //selected button
 
+document.querySelector('.classic').onclick = () => {changeMode(rpsMode)};
+document.querySelector('.spock').onclick = () => {changeMode(spockMode)};
+document.querySelector('.wuxing').onclick = () => {changeMode(wuxingMode)};
 
+player.icon.addEventListener("animationend", () => player.icon.classList.remove('shake1', 'shake2'));
+cpu.icon.addEventListener("animationend", () => cpu.icon.classList.remove('shake1', 'shake2'));
 
-options.forEach((e) => {
-    e.button.addEventListener('click', event => {
-        selection = e;
-        playRound("UI");
-    })
-})
+function changeMode(myMode = wuxingMode) {
+    const options = document.querySelector('.options')
+    mode = myMode;
+    options.textContent = '';
+    for (const obj of Object.values(myMode)) {
+        const btn = document.createElement('button');
+        btn.textContent = obj.emoji
+        btn.onclick = () => {selection = obj; playRound(true)};
+        btn.setAttribute('title', obj.id);
+        options.appendChild(btn);
+    }
+}
 
 //https://www.delftstack.com/howto/javascript/javascript-toggle-button/
 
-function playRound(mode) {
-    if (player.score == 5 || cpu.score == 5) return victory();
+function playRound(uiMode) {
+    player.icon.classList.remove('bob')
+    cpu.icon.classList.remove('bob')
+    if (player.score == 3 || cpu.score == 3) return victory();
     if (!player.score && !cpu.score) {
         updateText("", player.points);
         updateText("", cpu.points);
     }
-    const playerPick = playerPlay(mode);
-    const cpuPick = computerPlay();
+    const playerPick = playerPlay(uiMode);
+    const cpuPick = computerPlay(mode);
     const winner = pickWinner(playerPick, cpuPick);
     updateText(winner, msg);
 }
 
-function computerPlay() {    
-    const num = Math.floor(Math.random() * 3); //Number from 0-2
-    const result = options[num];
-    updateText(`CPU chose ${result.name}!`, cpu.text);
-    cpu.icon.textContent = result.emoji
+function computerPlay(mode) {    
+    const num = Math.floor(Math.random() * Object.keys(mode).length); //Number from 0-2
+    const result = Object.values(mode)[num];
+    updateText(`CPU chose ${result.id}!`, cpu.text);
+    cpu.icon.textContent = result.emoji;
     return result;
 }
 
-function playerPlay(mode, msg = "Rock, paper, or scissors?") {    
+function playerPlay(uiMode, msg = "Rock, paper, or scissors?") {    
     let result;
-    if (mode == "UI") result = selection;
+    if (uiMode) result = selection;
     else result = playerInput(msg); //repeats until valid
-    updateText(`You chose ${result.name}!`, player.text);
+    updateText(`You chose ${result.id}!`, player.text);
     player.icon.textContent = result.emoji;
     return result;
 }
 
 function pickWinner(playerPick, cpuPick) {
     let text = "It's a tie!"
-    if (cpuPick.weaknesses.includes(playerPick)) {
-        text = "You win the round!"
-        updateScore(player)
-    } else if (playerPick.weaknesses.includes(cpuPick)) {
-        text = "CPU wins the round!"
-        updateScore(cpu)
+    const cpuLoss = cpuPick.weaknesses[playerPick.lower];
+    const playerLoss = playerPick.weaknesses[cpuPick.lower];
+    if (cpuLoss) {
+        text = cpuLoss + " You score!";
+        updateScore(player);
+        player.icon.classList.add('shake1');
+    } else if (playerLoss) {
+        text = playerLoss + " CPU scores!";
+        updateScore(cpu);
+        cpu.icon.classList.add('shake1');
+    }
+    else {
+        player.icon.classList.add('shake2');
+        cpu.icon.classList.add('shake2');
     }
     return text;
 }
@@ -107,14 +240,16 @@ function victory() {
     const loser = (player.score < cpu.score) ? player : cpu;
     player.score = 0;
     cpu.score = 0;
+    player.icon.classList.add('bob');
+    cpu.icon.classList.add('bob');
 
     winner.icon.textContent = "🎉"
     winner.text.textContent = "Hip hip hurray!"
     loser.icon.textContent = "😭"
     loser.text.textContent = "Better luck next time!"
     msg.textContent = (winner == player)
-        ? "You won the game! Click to play again!"
-        : "CPU won the game! Click to play again!"
+        ? "You won! Click to play again!"
+        : "CPU won! Click to play again!"
 }
 
 //FOR CONSOLE GAMEPLAY MODE: 
@@ -126,16 +261,16 @@ function playerInput(msg) { //Recursively loops until player gives valid input
         : playerInput("Invalid input, please enter [rock], [paper], or [scissors]!");
 }
 
-function validateInput(input) { //Returns index of valid input OR undefined
-    const playerChoice = input.toUpperCase();
-    const result = options.find(rps => rps.upper == playerChoice);
+function validateInput(input, mode) { //Returns index of valid input OR undefined
+    const playerChoice = input.toLowerCase();
+    const result = Object.values(mode).find(e => e.lower == playerChoice);
     return result;
 }
 
-function playGame(mode) {   
+function playGame(uiMode = true) {   
 
-    if (mode == "UI") while (player.score < 3 && cpu.score < 3) playRound(UI);
-    else for (let i = 0; i < 5; i++) playRound();
+    if (uiMode) while (player.score < 3 && cpu.score < 3) playRound(true);
+    else for (let i = 0; i < 3; i++) playRound();
     
     let text = "[It's a tie! Play again?]";
     if (player.score > cpu.score) text = ("[Congratulations! You're the winner!]");

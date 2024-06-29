@@ -10,38 +10,47 @@
     <link rel="stylesheet" href="rps-style.css">
 </head>
 
-<body class="rps">
-    <h1 class="title">Let's Play Rock, Paper, Scissors!</h1>    
+<body class="rps column center" onload="changeMode();">
+    <h1 class="title">Let's Play Rock, Paper, Scissors!</h1>
+    <div class="modes center">
+        <div class="med">Mode:</div>
+        <button class="reg classic">✊ Classic</button>
+        <button class="reg spock">🖖 Spock</button>
+        <button class="reg wuxing">🔥 Elemental</button>
+    </div>
     <div class="main">
-        <div class="arena">
-            <div class="player">
+        <div class="arena center">
+            <div class="player column center">
                 <div class="big name">😃You😃</div>
-                <div class="points">"Let's go!"</div>
-                <div class="played">
-                    <div class="xl icon">🎲</div>
-                    <div class="text">Pick a hand and play!</div>
+                <div class="med points">"Let's go!"</div>
+                <div class="stage">
+                    <div class="played column center">
+                        <div class="xl icon">🎲</div>
+                        <div class="med text">Pick a hand and play!</div>
+                    </div>
                 </div>
             </div>
-            <div class="big vs">
-                <div class="name"></div>
-                <div class="xl clash">💥</div>
+            <div class="vs">
+                <div class="big name"></div>
+                <div class="med points"></div>
+                <div class="xl clash icon">💥</div>
+                <div class="med text"></div>
             </div>
-            <div class="cpu">
+            <div class="cpu column center">
                 <div class="big name">🤖CPU🤖</div>
-                <div class="points">"Robots rule!"</div>
-                <div class="played">
-                    <div class="xl icon">🎲</div>
-                    <div class="text">Pick a hand and play!</div>
+                <div class="med points">"Robots rule!"</div>
+                <div class="stage">
+                    <div class="played column center">
+                        <div class="xl icon">🎲</div>
+                        <div class="med text">Pick a hand and play!</div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="msg">Click any button to start a new game!</div>
+        <div class="med msg">Click any button to start a new game!</div>
     </div>   
 
     <div class="options">
-        <button class="left" data-index="0">✊</button>
-        <button class="mid" data-index="1">🖐&#65039;</button>
-        <button class="right" data-index="2">✌&#65039;</button>
     </div>
 </body>
 
