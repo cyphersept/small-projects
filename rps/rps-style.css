@@ -1,13 +1,27 @@
+:root {
+    --scroll-track: var(--my-yellow);
+    --scroll-thumb: var(--my-fuschia);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+}
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html, body {
-    height: 100%;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 16px;
+body {
+    font-weight: bold;
+    color: white;
+    background-color: var(--my-orange);
+    
+    text-align: center;
+    gap: 1rem;
+    min-height: 100vh;
+    width: 100%;
+    padding: 2rem;
+
 }
 
 .reg {
@@ -36,42 +50,38 @@ html, body {
     flex-flow: column;
 }
 
-.rps {
-    gap: 1rem;
-
-    width: 100%;
-    padding: 2rem;
-
-    font-weight: bold;
-    text-align: center;
-    color: white;
-    background-color: var(--my-orange);
-}
-
 .modes {
     gap: 16px;
 }
 
 .main {
-    padding: 1rem 1.5rem;
+    padding: 1rem;
     background-color: white;
     outline: var(--my-fuschia) solid 3px;
     color: var(--my-fuschia);
     border-radius: 8px;
+    width: 35rem;
 }
 
 .arena {
-    gap: 16px;
+    gap: 1rem;
+    justify-content: space-evenly;
 }
 
 .points {
-    text-align: left;
-    height: 32px;
-    margin: 0 0 8px 0;   
+    height: 2rem;
+    margin-bottom: 0.5rem;
+    animation-iteration-count: 1;
+    animation-duration: 1.5s;
+    animation-timing-function: ease;
 }
 
 .vs {
     width: auto;
+}
+
+.player, .cpu {
+    width: 16rem;
 }
 
 .stage {
@@ -85,7 +95,6 @@ html, body {
 
 .msg {
     margin-top: 0.5rem;
-    white-space: pre-wrap;
 }
 
 .options {
@@ -113,7 +122,7 @@ button {
     min-width: fit-content;
     padding: 0.65rem 1rem 1rem 1rem;
     box-shadow: inset -0.25rem -0.25rem 0px rgba(225, 82, 161, 0.6);
-    transition: box-shadow 0.02s cubic-bezier(.6,0,.5,1);
+    transition: background-color 40ms ease-in-out;
 }
 
 .options button {
@@ -122,8 +131,7 @@ button {
 
 button:hover, input:hover {
     background-color: var(--r-lime-1);
-    box-shadow: inset -0.25rem -0.25rem 0px var(--r-mauve-1);
-    transition: box-shadow 0.02s cubic-bezier(.6,0,.5,1);
+    transition: background-color 40ms ease-in-out;
 }
 
 button:active {
@@ -133,39 +141,37 @@ button:active {
     transition: none;
 }
 
-.shake1 {
-    animation: jump-shake 0.5s ease-in-out;
+.green {
+    background-color: var(--r-green-2);
+    box-shadow: inset -4px -4px 0px var(--r-green-4);
+    border-color: var(--r-green-5);
+    color: var(--r-green-5);
 }
 
-.shake2 {
-    animation: horizontal-shake 0.4s ease-in-out;
+.red {
+    background-color: var(--r-red-2);
+    box-shadow: inset -4px -4px 0px var(--r-red-3);
+    border-color: darkred;
+    color: darkred;
 }
 
-.bob {
-    animation: bob 2s cubic-bezier(.6, 0.1, .3, 1) 0.5s infinite;
-    transform-origin: bottom;
+.gold {
+    background-color: gold;
+    box-shadow: inset -4px -4px 0px 0px var(--r-yellow-2);
+    border-color: var(--r-red-3);
+    color: var(--r-red-3);
 }
 
-/* https://unused-css.com/blog/css-shake-animation/ */
-@keyframes jump-shake {
-    0% { transform: translateX(0) }
-    15%, 85% { transform: translateY(-9px) }
-    35%, 55% { transform: translateY(-9px) rotate(17deg) }
-    45%, 65% { transform: translateY(-9px) rotate(-17deg) }
-    100% { transform: translateY(0) rotate(0) }
+.silver {
+    background-color: aliceblue;
+    box-shadow: inset -4px -4px 0px var(--r-gray-3);
+    border-color: grey;
+    color: grey;
 }
 
-@keyframes horizontal-shake {
-    0%, 50%, 80% { transform: translateX(0) }
-    20%, 60% { transform: translateX(0.2rem) }
-    30%, 70% { transform: translateX(-0.2rem) }
-    40% { transform: translateX(0.2rem) }
-  }
-
-@keyframes bob {
-    0% { transform: translateY(0rem) scale(1, 1) }
-    15% { transform: translateY(-0.5rem) scale(.95,1.05)}
-    30% { transform: translateY(0.1rem) scale(1.1,0.9)}
-    35% { transform: translateY(0rem) scale(1.05, 0.95) }
-    40% { transform: translateY(0rem) scale(1, 1) }
+.blue {
+    background-color: var(--r-blue-1);
+    box-shadow: inset -4px -4px 0px dodgerblue;
+    border-color: var(--r-blue-4);
+    color: var(--r-blue-4);
 }

@@ -6,7 +6,8 @@ const rpsMode = {
         weaknesses: {
             paper: "Paper covers rock!"
         },
-        emoji: "✊"
+        emoji: "✊",
+        styleClass: "red"
     },
     paper: {
         id: "Paper",
@@ -15,7 +16,8 @@ const rpsMode = {
         weaknesses: {
             scissors: "Scissors cut paper!"
         },
-        emoji: "🖐" + String.fromCodePoint("65039")
+        emoji: "🖐" + String.fromCodePoint("65039"),
+        styleClass: "silver"
     },
     scissors: {
         id: "Scissors",
@@ -24,7 +26,8 @@ const rpsMode = {
         weaknesses: {
             rock: "Rock crushes scissors!"
         },
-        emoji: "✌" + String.fromCodePoint("65039")
+        emoji: "✌" + String.fromCodePoint("65039"),
+        styleClass: "gold"
     },
 }
 
@@ -37,7 +40,8 @@ const spockMode = {
             paper: "Paper covers rock!",
             spock: "Spock vaporizes rock!"
         },
-        emoji: "✊"
+        emoji: "✊",
+        styleClass: "red"
     },
     paper: {
         id: "Paper",
@@ -47,7 +51,8 @@ const spockMode = {
             scissors: "Scissors cut paper!",
             lizard: "Lizard eats paper!"
         },
-        emoji: "🖐" + String.fromCodePoint("65039")
+        emoji: "🖐" + String.fromCodePoint("65039"),
+        styleClass: "silver"
     },
     scissors: {
         id: "Scissors",
@@ -57,7 +62,8 @@ const spockMode = {
             rock: "Rock crushes scissors!",
             spock: "Spock smashes scissors!"
         },
-        emoji: "✌" + String.fromCodePoint("65039")
+        emoji: "✌" + String.fromCodePoint("65039"),
+        styleClass: "gold"
     },
     lizard: {
         id: "Lizard",
@@ -67,7 +73,8 @@ const spockMode = {
             rock: "Rock crushes lizard!",
             scissors: "Scissors decapitate lizard!"
         },
-        emoji: "🤏" + String.fromCodePoint("65039")
+        emoji: "🤏" + String.fromCodePoint("65039"),
+        styleClass: "green"
     },
     spock: {
         id: "Spock",
@@ -77,7 +84,8 @@ const spockMode = {
             paper: "Paper disproves Spock!",
             lizard: "Lizard poisons Spock!"
         },
-        emoji: "🖖" + String.fromCodePoint("65039")
+        emoji: "🖖" + String.fromCodePoint("65039"),
+        styleClass: "blue"
     },
 }
 
@@ -90,7 +98,8 @@ const wuxingMode = {
             fire: "Fire burns wood!",
             metal: "Metal snaps wood!"
         },
-        emoji: "🌳"
+        emoji: "🌳",
+        styleClass: "green"
     },
     fire: {
         id: "Fire",
@@ -100,7 +109,8 @@ const wuxingMode = {
             earth: "Earth smothers fire!",
             water: "Water extinguishes fire!"
         },
-        emoji: "🔥" + String.fromCodePoint("65039")
+        emoji: "🔥" + String.fromCodePoint("65039"),
+        styleClass: "red"
     },
     earth: {
         id: "Earth",
@@ -110,7 +120,8 @@ const wuxingMode = {
             metal: "Metal impoverishes earth!",
             wood: "Wood depletes earth!"
         },
-        emoji: "🌱" + String.fromCodePoint("65039")
+        emoji: "🌱" + String.fromCodePoint("65039"),
+        styleClass: "gold"
     },
     metal: {
         id: "Metal",
@@ -120,7 +131,8 @@ const wuxingMode = {
             water: "Water rusts metal!",
             fire: "Fire melts metal!"
         },
-        emoji: "🪙" + String.fromCodePoint("65039")
+        emoji: "🪙" + String.fromCodePoint("65039"),
+        styleClass: "silver"
     },
     water: {
         id: "Water",
@@ -130,7 +142,8 @@ const wuxingMode = {
             wood: "Wood absorbs water!",
             earth: "Earth blocks water!"
         },
-        emoji: "🌊" + String.fromCodePoint("65039")
+        emoji: "🌊" + String.fromCodePoint("65039"),
+        styleClass: "blue"
     },
 }
 
@@ -139,6 +152,7 @@ const player = {
     points: document.querySelector('.rps .player .points'),
     icon: document.querySelector('.rps .player .icon'),
     text: document.querySelector('.rps .player .text'),
+    phrases: ["Let's go!", "Feeling lucky!", "I'm gonna win!", "Game on!"]
 }
 
 const cpu = {
@@ -146,6 +160,7 @@ const cpu = {
     points: document.querySelector('.rps .cpu .points'),
     icon: document.querySelector('.rps .cpu .icon'),
     text: document.querySelector('.rps .cpu .text'),
+    phrases: ["Robots rule!", "Prepare to lose!", "Despair, mortal!", "Let's settle this!"]
 }
 
 const msg = document.querySelector('.rps .msg');
@@ -156,18 +171,34 @@ document.querySelector('.classic').onclick = () => {changeMode(rpsMode)};
 document.querySelector('.spock').onclick = () => {changeMode(spockMode)};
 document.querySelector('.wuxing').onclick = () => {changeMode(wuxingMode)};
 
-player.icon.addEventListener("animationend", () => player.icon.classList.remove('shake1', 'shake2'));
-cpu.icon.addEventListener("animationend", () => cpu.icon.classList.remove('shake1', 'shake2'));
+document.querySelector('.rps').addEventListener("animationend", (e) => e.target.classList.remove('jump-shake', 'side-shake', 'bob'));
 
-function changeMode(myMode = wuxingMode) {
+function randomRange(max) {
+    return Math.floor (Math.random() * max);
+}
+
+function changeMode(myMode = rpsMode) {
     const options = document.querySelector('.options')
     mode = myMode;
+
+    // Clears current board 
     options.textContent = '';
+    msg.textContent = "Click any button to start a new game!";
+    player.score                =   cpu.score = 0;
+    player.text.textContent     =   cpu.text.textContent = "Pick a hand and play!";
+    player.icon.textContent     =   cpu.icon.textContent = "🎲";
+    player.points.textContent = `"${player.phrases[randomRange(player.phrases.length)]}"`;
+    cpu.points.textContent = `"${cpu.phrases[randomRange(cpu.phrases.length)]}"`;
+    player.icon.classList.add('bob');
+    cpu.icon.classList.add('bob');
+
+    // Create button for each option of mode
     for (const obj of Object.values(myMode)) {
         const btn = document.createElement('button');
         btn.textContent = obj.emoji
         btn.onclick = () => {selection = obj; playRound(true)};
         btn.setAttribute('title', obj.id);
+        btn.classList.add(obj.styleClass, 'jump-shake');
         options.appendChild(btn);
     }
 }
@@ -189,8 +220,8 @@ function playRound(uiMode) {
 }
 
 function computerPlay(mode) {    
-    const num = Math.floor(Math.random() * Object.keys(mode).length); //Number from 0-2
-    const result = Object.values(mode)[num];
+    const i = randomRange(Object.keys(mode).length); 
+    const result = Object.values(mode)[i];
     updateText(`CPU chose ${result.id}!`, cpu.text);
     cpu.icon.textContent = result.emoji;
     return result;
@@ -212,15 +243,15 @@ function pickWinner(playerPick, cpuPick) {
     if (cpuLoss) {
         text = cpuLoss + " You score!";
         updateScore(player);
-        player.icon.classList.add('shake1');
+        player.icon.classList.add('jump-shake');
     } else if (playerLoss) {
         text = playerLoss + " CPU scores!";
         updateScore(cpu);
-        cpu.icon.classList.add('shake1');
+        cpu.icon.classList.add('jump-shake');
     }
     else {
-        player.icon.classList.add('shake2');
-        cpu.icon.classList.add('shake2');
+        player.icon.classList.add('side-shake');
+        cpu.icon.classList.add('side-shake');
     }
     return text;
 }
@@ -233,6 +264,7 @@ function updateText(str, loc) {
 function updateScore(user) {
     user.score++;
     user.points.textContent += "⭐" + String.fromCodePoint("65039")
+    user.points.classList.add('bob');
 }
 
 function victory() {

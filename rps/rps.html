@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang= "en">
+<html lang= "en" class="scroller">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors</title>
-    <link rel="stylesheet" href="palette.css">
+    <link rel="stylesheet" href="../palette.css">
     <link rel="stylesheet" href="rps-style.css">
+    <link rel="stylesheet" href="../animations.css">
 </head>
 
 <body class="rps column center" onload="changeMode();">
     <h1 class="title">Let's Play Rock, Paper, Scissors!</h1>
     <div class="modes center">
-        <div class="med">Mode:</div>
-        <button class="reg classic">✊ Classic</button>
-        <button class="reg spock">🖖 Spock</button>
-        <button class="reg wuxing">🔥 Elemental</button>
+        <button class="reg gold classic">✊ Classic</button>
+        <button class="reg silver spock">🖖 Spock</button>
+        <button class="reg red wuxing">🔥 Elemental</button>
     </div>
     <div class="main">
         <div class="arena center">
             <div class="player column center">
                 <div class="big name">😃You😃</div>
-                <div class="med points">"Let's go!"</div>
+                <div class="med points"></div>
                 <div class="stage">
                     <div class="played column center">
                         <div class="xl icon">🎲</div>
@@ -31,14 +31,12 @@
                 </div>
             </div>
             <div class="vs">
-                <div class="big name"></div>
                 <div class="med points"></div>
                 <div class="xl clash icon">💥</div>
-                <div class="med text"></div>
             </div>
             <div class="cpu column center">
                 <div class="big name">🤖CPU🤖</div>
-                <div class="med points">"Robots rule!"</div>
+                <div class="med points"></div>
                 <div class="stage">
                     <div class="played column center">
                         <div class="xl icon">🎲</div>

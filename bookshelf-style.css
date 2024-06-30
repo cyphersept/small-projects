@@ -8,7 +8,7 @@
     --my-pink: rgb(255, 182, 219);
     --med-pink: rgb(255, 146, 201);
     --dark: rgb(136, 4, 120);
-    --jade: rgb(157, 226, 200);
+    --my-jade: rgb(157, 226, 200);
     --ribbon-size: 5px;
     --page-size: 2px;
 }
@@ -64,7 +64,7 @@ body {
 }
 
 .ribbon {
-    background-color: var(--jade);
+    background-color: var(--my-jade);
     color: var(--my-teal);
     font-size: 0px;
     padding: 0.5rem;
