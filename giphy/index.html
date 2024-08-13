@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gif-inator</title>
+  </head>
+  <body>
+    <img
+      src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmhpMHJ1NHRodnAzZWI4aXJwbWdnNG1sN3B2dG94NjR1NHF6Z3hpdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kz9HajYGviQeI/giphy.gif"
+      alt="Some gif"
+    />
+
+    <div>
+      <label for="search">
+        Search for a GIF:
+        <input type="text" name="search" id="search" />
+        <button onclick="clickedSearch()">Search!</button>
+      </label>
+    </div>
+    <script>
+      const img = document.querySelector("img");
+      const https = "https://";
+      const translate = "api.giphy.com/v1/gifs/translate";
+      const key = "N4Dvkzu459OkhSvslycNyc9lunIlyjaP";
+      const myRequest = {
+        api_key: key,
+        s: "cats",
+        rating: "pg",
+      };
+
+      function generateRequest(req, endpoint) {
+        let str = https.concat(endpoint, "?");
+        for (const [param, val] of Object.entries(req)) {
+          str = str.concat(param, "=", val, "&");
+        }
+        str = str.slice(0, -1);
+        console.log(str);
+        return str;
+      }
+
+      function fetchRequest(req = myRequest, endpoint = translate) {
+        const url = generateRequest(myRequest, translate);
+        fetch(url, { mode: "cors" })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (response) {
+            const img = response.data.images.original.url;
+            updateImg(img);
+          })
+          .catch(function (error) {
+            console.log(error);
+            updateImg(
+              "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXRzMzZxZGF6aXVweGs3c3h3d3Y0NGN6ZWNxNXp1MmtzcHhpY2NvaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8L0Pky6C83SzkzU55a/giphy.gif"
+            );
+          });
+      }
+
+      function updateImg(newSrc) {
+        img.src = newSrc;
+      }
+
+      function clickedSearch() {
+        const terms = document
+          .querySelector("#search")
+          .value.replace(/ /g, "_");
+        const newReq = myRequest;
+        newReq.s = terms;
+        fetchRequest(newReq, translate);
+      }
+    </script>
+  </body>
+</html>
