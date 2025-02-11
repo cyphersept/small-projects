@@ -1,206 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="bookshelf-style.css">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../palette.css" />
+    <link rel="stylesheet" href="bookshelf-style.css" />
     <title>Bookshelf</title>
 </head>
 
 <body>
+    <main class="foreground">
+        <header class="header">
+            <h1><svg viewBox="-4 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+                    fill="#000000">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <title>bookmark</title>
+                        <desc>Created with Sketch Beta.</desc>
+                        <defs> </defs>
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"
+                            sketch:type="MSPage">
+                            <g id="Icon-Set-Filled" sketch:type="MSLayerGroup"
+                                transform="translate(-419.000000, -153.000000)" fill="currentColor">
+                                <path
+                                    d="M437,153 L423,153 C420.791,153 419,154.791 419,157 L419,179 C419,181.209 420.791,183 423,183 L430,176 L437,183 C439.209,183 441,181.209 441,179 L441,157 C441,154.791 439.209,153 437,153"
+                                    id="bookmark" sketch:type="MSShapeGroup"> </path>
+                            </g>
+                        </g>
+                    </g>
+                </svg>My Library</h1>
+        </header>
 
-<div class="foreground">
-    <div class="header">My Library</div>
+        <div id="shelf">
+            <header class="row">
+                <h3 class="ribbon spacer">Read</h3>
+                <div class="info display">
+                    <h3 class="title">Title</h3>
+                    <h3 class="author">Author</h3>
+                    <h3 class="pages">Pages</h3>
+                </div>
+            </header>
+            <template id="book-template">
+                <div class="book row">
+                    <button class="ribbon">
+                        <svg class="read hidden" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="5 3 14 18">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path d="M7 3H17C18.1 3 19 3.9 19 5V21L12 18L5 21V5C5 3.9 5.9 3 7 3Z"
+                                    fill="currentColor"></path>
+                                <path
+                                    d="M16 8.94667L15.06 8L10.6667 12.3933L8.94667 10.68L8 11.62L10.6667 14.28L16 8.94667Z"
+                                    fill="#4d65b4"></path>
+                            </g>
+                        </svg>
+                        <svg class="unread" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="5 3 14 18">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path d="M7 3H17C18.1 3 19 3.9 19 5V21L12 18L5 21V5C5 3.9 5.9 3 7 3Z"
+                                    fill="currentColor"></path>
+                                <path
+                                    d="M13.591 13.6517L14.6516 12.591L13.0607 11L14.6516 9.40901L13.591 8.34835L12 9.93934L10.409 8.34835L9.34834 9.40901L10.9393 11L9.34834 12.591L10.409 13.6517L12 12.0607L13.591 13.6517Z"
+                                    fill="#4d65b4"></path>
+                            </g>
+                        </svg>
+                    </button>
 
-    <div class="add" onclick="cloneTemplate()">
-        <!-- "Add new book" on hover -->
-    </div>
+                    <form class="info form hidden">
+                        <input type="text" class="title in" name="myTitle" placeholder="Title" maxlength="100" />
+                        <input type="text" class="author in" name="myAuthor" placeholder="Author" maxlength="50" />
+                        <input type="number" class="pages in" name="myPages" placeholder="Page count" maxlength="10" />
+                    </form>
 
-    <div class="shelf">
-        <div class="book template" onclick="this.bookObj.info()">
-            <div class="container">
-                <div class="ribbon" onclick="getBookFromNode(this).toggleRead()">Read</div>
-            </div>
-            
-            <form class="info">
-                <input type="text" class="titleIn" name="myTitle" placeholder="Title" maxlength="100">
-                <input type="text" class="authorIn" name="myAuthor" placeholder="Author" maxlength="50">
-                <input type="number" class="pagesIn" name="myPages" placeholder="Page count" maxlength="10">
-            </form>
-            <div class="buttons">
-                <div class="edit" onclick="buttonLPress(this)"></div>
-                <div class="delete" onclick="buttonLPress(this)"></div>
-            </div>
+                    <div class="info display default">
+                        <div class="title">No title</div>
+                        <div class="author">Unknown</div>
+                        <div class="pages">0</div>
+                    </div>
+
+                    <div class="buttons">
+                        <button type="button" class="hidden save" aria-label="save">
+                            <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="3 3 18 18">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M3 9C3 6.17157 3 4.75736 3.87868 3.87868C4.75736 3 6.17157 3 9 3H15.3431C16.1606 3 16.5694 3 16.9369 3.15224C17.3045 3.30448 17.5935 3.59351 18.1716 4.17157L19.8284 5.82843C20.4065 6.40649 20.6955 6.69552 20.8478 7.06306C21 7.4306 21 7.83935 21 8.65685V15C21 17.8284 21 19.2426 20.1213 20.1213C19.48 20.7626 18.5534 20.9359 17 20.9827V18L17 17.9384C17.0001 17.2843 17.0001 16.6965 16.9362 16.2208C16.8663 15.7015 16.7042 15.1687 16.2678 14.7322C15.8313 14.2958 15.2985 14.1337 14.7792 14.0638C14.3034 13.9999 13.7157 13.9999 13.0616 14L13 14H10L9.93839 14C9.28427 13.9999 8.69655 13.9999 8.22084 14.0638C7.70149 14.1337 7.16867 14.2958 6.73223 14.7322C6.29579 15.1687 6.13366 15.7015 6.06383 16.2208C5.99988 16.6965 5.99993 17.2843 6 17.9384L6 18V20.9239C5.02491 20.828 4.36857 20.6112 3.87868 20.1213C3 19.2426 3 17.8284 3 15V9ZM15 18V21H9C8.64496 21 8.31221 21 8 20.9983V18C8 17.2646 8.00212 16.8137 8.046 16.4873C8.08457 16.2005 8.13942 16.1526 8.14592 16.1469L8.14645 16.1464L8.14692 16.1459C8.1526 16.1394 8.20049 16.0846 8.48734 16.046C8.81369 16.0021 9.26462 16 10 16H13C13.7354 16 14.1863 16.0021 14.5127 16.046C14.7995 16.0846 14.8474 16.1394 14.8531 16.1459L14.8536 16.1464L14.8541 16.1469C14.8606 16.1526 14.9154 16.2005 14.954 16.4873C14.9979 16.8137 15 17.2646 15 18ZM7 7C6.44772 7 6 7.44772 6 8C6 8.55228 6.44772 9 7 9H12C12.5523 9 13 8.55228 13 8C13 7.44772 12.5523 7 12 7H7Z"
+                                        fill="currentColor"></path>
+                                </g>
+                            </svg>
+                        </button>
+                        <button type="button" class="edit" aria-label="edit">
+                            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path fill="currentColor" fill-rule="evenodd"
+                                        d="M15.198 3.52a1.612 1.612 0 012.223 2.336L6.346 16.421l-2.854.375 1.17-3.272L15.197 3.521zm3.725-1.322a3.612 3.612 0 00-5.102-.128L3.11 12.238a1 1 0 00-.253.388l-1.8 5.037a1 1 0 001.072 1.328l4.8-.63a1 1 0 00.56-.267L18.8 7.304a3.612 3.612 0 00.122-5.106zM12 17a1 1 0 100 2h6a1 1 0 100-2h-6z">
+                                    </path>
+                                </g>
+                            </svg>
+                        </button>
+                        <button type="button" class="delete" aria-label="delete">
+                            <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0.25 2 23.75 20">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M6.30958 3.54424C7.06741 2.56989 8.23263 2 9.46699 2H20.9997C21.8359 2 22.6103 2.37473 23.1614 2.99465C23.709 3.61073 23.9997 4.42358 23.9997 5.25V18.75C23.9997 19.5764 23.709 20.3893 23.1614 21.0054C22.6103 21.6253 21.8359 22 20.9997 22H9.46699C8.23263 22 7.06741 21.4301 6.30958 20.4558L0.687897 13.2279C0.126171 12.5057 0.126169 11.4943 0.687897 10.7721L6.30958 3.54424ZM10.2498 7.04289C10.6403 6.65237 11.2734 6.65237 11.664 7.04289L14.4924 9.87132L17.3208 7.04289C17.7113 6.65237 18.3445 6.65237 18.735 7.04289L19.4421 7.75C19.8327 8.14052 19.8327 8.77369 19.4421 9.16421L16.6137 11.9926L19.4421 14.8211C19.8327 15.2116 19.8327 15.8448 19.4421 16.2353L18.735 16.9424C18.3445 17.3329 17.7113 17.3329 17.3208 16.9424L14.4924 14.114L11.664 16.9424C11.2734 17.3329 10.6403 17.3329 10.2498 16.9424L9.54265 16.2353C9.15212 15.8448 9.15212 15.2116 9.54265 14.8211L12.3711 11.9926L9.54265 9.16421C9.15212 8.77369 9.15212 8.14052 9.54265 7.75L10.2498 7.04289Z"
+                                        fill="currentColor"></path>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </template>
+
+
         </div>
+        <button type="button" class="add" aria-label="add book">
+            +
+        </button>
+    </main>
 
-        <div class="book first" onclick="this.bookObj.info()">
-            <div class="container">
-                <div class="ribbon" onclick="getBookFromNode(this).toggleRead()">Read</div>
-            </div>
-            
-            <form class="info">
-                <input type="text" class="titleIn" name="myTitle" placeholder="Title" maxlength="100">
-                <input type="text" class="authorIn" name="myAuthor" placeholder="Author" maxlength="50">
-                <input type="number" class="pagesIn" name="myPages" placeholder="Page count" maxlength="10">
-            </form>
-            <div class="buttons">
-                <div class="edit" onclick="buttonLPress(this)"></div>
-                <div class="delete" onclick="buttonLPress(this)"></div>
-            </div>
-        </div>
-    </div>
-</div>
+    <div class="bg"></div>
 
-<div class="bg"></div>
+    <script>
+        "use strict";
+        const library = new Map();
+        const bookTemplate = document.getElementById("book-template")
+        const shelfElement = document.getElementById("shelf")
+        document.querySelector(".add").onclick = () => addBookToLibrary(new Book());
 
-<script>
-const shelf = document.querySelector(".shelf");
-const template = document.querySelector(".template");
-//const newBtn = document.querySelector('add').addEventListener(click, createNewBook);
-let myLibrary = [new Book(template)];
-let currentEdit;
+        // Creates mostly unique ID with very low chance of collision to use for book
+        function generateUuid() {
+            const randomLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26))
+            return randomLetter + Date.now();
+        }
 
+        // Book constructor
+        function Book(title = "No title", author = "Unknown", pages = 0, read = false, id) {
+            this.title = title;
+            this.author = author;
+            this.pages = pages;
+            this.read = read;
+            this.id = id ?? generateUuid();
+        }
 
+        // Add a created book to the library and render it
+        function addBookToLibrary(book) {
+            if (book instanceof Book) {
+                library.set(book.id, book);
+                renderBook(book);
+            }
+        }
 
-// TO-DO:
-//     - Make bookshelf scroll with invisible fade if too big
-//     - Little plant on side
-//     - Table
-//     - Fancy Background
-// https://stackoverflow.com/questions/12456399/how-to-use-this-reference-of-the-element-calling-the-function
+        function removeBookFromLibrary(book) {
+            document.getElementById(book.id).remove();
+            library.delete(book.id)
+        }
 
-function Book(node, title="Title", author="Author", pages="Pages") {
-    this.node = node,
-    this.title = title, 
-    this.author = author, 
-    this.pages = pages, 
-    this.read = false;
-}
+        // Create element from template and fill in the book's values
+        function renderBook(book) {
+            const node = bookTemplate.content.cloneNode(true);
+            // Fills in the book values
+            node.querySelector(".title.in").value = book.title;
+            node.querySelector(".author.in").value = book.author;
+            node.querySelector(".pages.in").value = book.pages;
 
-Book.prototype.info = function() {
-    let status = this.read ? "read" : "not yet read";
-    let msg = `${this.title} by ${this.author}, ${this.pages} pages, ${status}`;
-    console.log(msg)
-    return msg.toString();
-}
+            // Listens for clicks to the read, edit, save, and delete buttons
+            node.querySelector(".ribbon").onclick = () => toggleRead(book);
+            node.querySelector(".delete").onclick = () => removeBookFromLibrary(book);
+            node.querySelector(".edit").onclick = () => editNode(book.id);
+            node.querySelector(".save").onclick = () => saveNodeEdits(book.id);
 
-Book.prototype.toggleRead = function(){
-    this.read = !this.read;
-    this.node.querySelector('.ribbon').classList.toggle('read')
-}
+            // Append to shelf node with ID
+            shelfElement.appendChild(node);
+            shelfElement.lastElementChild.setAttribute("id", book.id);
+        }
 
-// Book.prototype.updateDisplay = function(){
-//     let status = (this.read) ? "read" : "unread";
-//     this.node.querySelector('.title').innerHTML = `${this.title}`;
-//     this.node.querySelector('.author').innerHTML = `${this.author}`;
-//     this.node.querySelector('.pagesAndRead').innerHTML = `${this.pages} pages, ${status}`;
-// }
+        function updateBook(id, newTitle, newAuthor, newPages) {
+            const updated = new Book(newTitle, newAuthor, newPages, library.get(id).read, id)
+            library.set(id, updated);
+        }
 
-//Adds new book to array and clones template on DOM - USELESS
-// Book.prototype.addToLibrary = function() {
-//     this.node = template.cloneNode(deep);
-//     this.node.className = 'book';
-//     this.node.setAttribute('data-index', `${myLibrary.length}`);
-//     this.updateDisplay();
-    
-//     shelf.appendChild(this.node)
-//     myLibrary.push(this);
-// }
+        // Allow users to input edits 
+        function editNode(nodeId) {
+            const node = document.getElementById(nodeId);
 
-Book.prototype.delete = function() {
-    // shelf.removeChild(this.node);    
-    delete this.node.bookObj;
-    this.node.remove();
-}
+            // Show display instead of form
+            node.querySelector(".info.display").classList.toggle("hidden");
+            node.querySelector(".info.form").classList.toggle("hidden");
 
-Book.prototype.confirmEdits = function() {
-    this.title = this.node.querySelector("titleIn").value;
-    this.author = this.node.querySelector("authorIn").value;
-    this.pages = this.node.querySelector("pagesIn").value;
+            // Swap edit/save button visibility
+            node.querySelector(".save").classList.toggle("hidden");
+            node.querySelector(".edit").classList.toggle("hidden");
+        }
 
-    this.toggleMode();
-}
+        // Save field inputs as display text
+        function saveNodeEdits(nodeId) {
+            const node = document.getElementById(nodeId);
+            const display = node.querySelector(".info.display");
+            const form = node.querySelector(".info.form");
 
-Book.prototype.cancelEdits = function() {
-    this.node.querySelector("titleIn").value = this.title;
-    this.node.querySelector("authorIn").value = this.author;
-    this.node.querySelector("pagesIn").value = this.pages;
+            // Update display with input values
+            display.querySelector(".title").value = form.querySelector(".title").value
+            display.querySelector(".author").value = form.querySelector(".author").value
+            display.querySelector(".pages").value = form.querySelector(".pages").value
 
-    this.toggleMode();
-}
+            // Save updates to object
+            updateBook(node.id, form.querySelector(".title").value, form.querySelector(".author").value, form.querySelector(".pages").value);
 
-Book.prototype.toggleMode = function() {
-    const buttons = this.node.querySelector(".buttons");
-    const fieldsList = this.node.querySelectorAll(".info > *");
-    
-    fieldsList.forEach((e) => e.readOnly = !e.readOnly);
-    buttons.classList.toggle("editMode");
-}
+            // Remove styling to indicate unedited info
+            node.classList.remove("default")
 
-// ###### DOM FUNCTIONS ######
+            // Show display instead of form
+            node.querySelector(".info.display").classList.toggle("hidden");
+            node.querySelector(".info.form").classList.toggle("hidden");
 
-function cloneTemplate() {
-    const myBook = new Book(template.cloneNode(deep));
-    myBook.node.classList.remove("template");
-    myBook.node.bookObj = myBook;
-    // myBook.node.setAttribute('data-index', `${myLibrary.length}`);
-    // myBook.updateDisplay();
+            // Swap edit/save button visibility
+            node.querySelector(".save").classList.toggle("hidden");
+            node.querySelector(".edit").classList.toggle("hidden");
+        }
 
-    // myLibrary.push(myBook);    
-    shelf.appendChild(myBook.node)
-    return myBook;
-}
+        // Change book's read status
+        function toggleRead(book) {
+            const bookElement = document.getElementById(book.id);
+            book.read = !book.read;
+            bookElement.querySelector(".read").classList.toggle("hidden");
 
-buttonLPress = function(myNode) {
-    const editState = myNode.parentNode.classList.contains("editMode");
-    currentEdit.confirmEdits();
-    if (!editState) {
-        currentEdit = getBookFromNode(myNode);
-        currentEdit.toggleMode();
-    }
-}
+            bookElement.querySelector(".unread").classList.toggle("hidden");
+        }
 
-buttonRPress = function(myNode) {
-    const editState = myNode.parentNode.classList.contains("editMode");
-    const book = getBookFromNode(myNode);
-    if (!editState) { 
-        book.delete();
-    }
-    if (editState) { 
-        cancelEdits(book);
-    }
-}
+        // Render every element saved in the library array
+        function renderLibrary(library) {
+            library.forEach(book => renderBook(book));
+        }
 
-
-
-createNewBook = function(obj){    
-    document.getElementById('bookForm').close();    
-}
-
-close = function(){
-    this.style.display.none;
-}
-
-// ###### UTILITY FUNCTIONS ######
-
-function getBookFromNode(myNode) {
-    // return myLibrary[myNode.dataset.index]
-    let node = myNode;
-    while (!node.bookObj) {
-        if (!node) break;
-        else node = node.parentElement;
-    }
-    return (node) ? myNode.bookObj : null;
-}
-
-
-const firstBook = document.querySelector(".book.first")
-const testBook = new Book(firstBook, "Test Book", "User", 10)
-firstBook.bookObj = testBook;
-
-
-
-</script>
+        /*
+                function setReadonlyOnNode(node, readonly) {
+            if (readonly) {
+                node.querySelectorAll("input").forEach(el => el.setAttribute("readonly", "readonly"));
+            }
+            else {
+                node.querySelectorAll("input").forEach(el => el.removeAttribute("readonly"))
+            }
+        }
+        */
+        addBookToLibrary(new Book())
+    </script>
 </body>
+
 </html>
